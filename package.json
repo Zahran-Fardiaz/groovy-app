@@ -8,17 +8,21 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "worker:sync": "tsx src/worker/runSync.ts"
+    "worker:sync": "tsx src/worker/runSync.ts",
+    "cap:sync": "cap sync android",
+    "build:apk": "npm run build && cap sync android && cd android && .\\gradlew.bat assembleDebug"
   },
   "dependencies": {
-    "@rolldown/binding-linux-x64-gnu": "^1.2.7",
+    "@capacitor/app": "^8.1.2",
     "canvas-confetti": "^1.9.4",
     "lucide-react": "^1.41.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },
   "devDependencies": {
-    "@oxlint/binding-linux-x64-gnu": "^1.81.0",
+    "@capacitor/android": "^8.6.0",
+    "@capacitor/cli": "^8.6.0",
+    "@capacitor/core": "^8.6.0",
     "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",

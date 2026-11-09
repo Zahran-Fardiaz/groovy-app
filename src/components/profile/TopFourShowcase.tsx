@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Award, Plus } from 'lucide-react';
-import { Album } from '../../types/music';
+import React, { useState, useMemo } from 'react';
+import { Plus, X, Search, Sparkles, Trash2, Check, Disc3 } from 'lucide-react';
 import { storageService } from '../../services/storageService';
 import { useAuth } from '../../context/AuthContext';
+import { Album } from '../../types/music';
 
 interface TopFourShowcaseProps {
   topAlbumIds: string[];
@@ -15,159 +15,321 @@ export const TopFourShowcase: React.FC<TopFourShowcaseProps> = ({
   isOwner = true,
   onOpenAlbum
 }) => {
-  const { updateTopFour } = useAuth();
-  const [isEditing, setIsEditing] = useState(false);
-  const allAlbums = storageService.getAlbums();
+  const { updateTopFour, currentUser } = useAuth();
+  const [activeSlot, setActiveSlot] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterMode, setFilterMode] = useState<'all' | 'reviewed' | 'indonesian'>('all');
 
-  const slots = [0, 1, 2, 3];
-  const selectedAlbums: (Album | undefined)[] = slots.map(index => {
-    const id = topAlbumIds[index];
-    return id ? storageService.getAlbumById(id) : undefined;
-  });
+  const allAlbums = useMemo(() => storageService.getAlbums(), []);
+  const myReviews = useMemo(
+    () => storageService.getReviews().filter(r => r.userId === currentUser.id),
+    [currentUser.id]
+  );
 
-  const handleSelectAlbumForSlot = (slotIndex: number, albumId: string) => {
-    const newIds = [...topAlbumIds];
-    newIds[slotIndex] = albumId;
-    updateTopFour(newIds);
+  const reviewedAlbumIds = useMemo(
+    () => new Set(myReviews.map(r => r.albumId)),
+    [myReviews]
+  );
+
+  const filteredAlbums = useMemo(() => {
+    let list = allAlbums;
+    if (filterMode === 'reviewed') {
+      list = list.filter(a => reviewedAlbumIds.has(a.id));
+    } else if (filterMode === 'indonesian') {
+      list = list.filter(a => a.isIndonesian || a.origin === 'Indonesia');
+    }
+
+    if (!searchQuery.trim()) return list;
+    const q = searchQuery.toLowerCase().trim();
+    return list.filter(
+      a =>
+        a.title.toLowerCase().includes(q) ||
+        a.artist.toLowerCase().includes(q) ||
+        (a.genres && a.genres.some(g => g.toLowerCase().includes(q)))
+    );
+  }, [allAlbums, filterMode, searchQuery, reviewedAlbumIds]);
+
+  const handleSelectAlbum = (albumId: string) => {
+    if (activeSlot === null) return;
+    const ids = Array.from({ length: 4 }, (_, idx) => topAlbumIds[idx] || '');
+    ids[activeSlot] = albumId;
+    updateTopFour(ids);
+    setActiveSlot(null);
+    setSearchQuery('');
+  };
+
+  const handleClearSlot = (slotIndex: number, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    const ids = Array.from({ length: 4 }, (_, idx) => topAlbumIds[idx] || '');
+    ids[slotIndex] = '';
+    updateTopFour(ids);
+    if (activeSlot === slotIndex) {
+      setActiveSlot(null);
+      setSearchQuery('');
+    }
   };
 
   return (
-    <section style={{ margin: '18px 0' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <Award size={14} color="var(--star-gold)" />
-          <h3 style={{ fontSize: '13px', fontWeight: 600, color: '#ffffff' }}>
+    <section className="profile-top-four-section" aria-labelledby="profile-favorites-heading">
+      {/* Section Header */}
+      <div className="section-header-row">
+        <div>
+          <h2 id="profile-favorites-heading" className="profile-section-title">
             Top 4 Favorites
-          </h3>
+          </h2>
+          <span className="profile-section-subtitle">Your defining records</span>
         </div>
         {isOwner && (
           <button
-            onClick={() => setIsEditing(!isEditing)}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: '#ffffff',
-              fontSize: '11px',
-              fontWeight: 500,
-              cursor: 'pointer'
-            }}
+            className="profile-curator-action-btn"
+            onClick={() => setActiveSlot(0)}
+            aria-label="Edit showcase favorites"
           >
-            {isEditing ? 'Done' : 'Edit Showcase'}
+            Manage Slots
           </button>
         )}
       </div>
 
-      {/* 4 Album Cover Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
-        {slots.map(index => {
-          const album = selectedAlbums[index];
+      {/* 4 Vinyl Showcase Grid */}
+      <div className="top-four-vinyl-grid">
+        {[0, 1, 2, 3].map(index => {
+          const albumId = topAlbumIds[index];
+          const album: Album | undefined = albumId ? storageService.getAlbumById(albumId) : undefined;
+          const isSlotActive = activeSlot === index;
 
           return (
             <div
               key={index}
-              id={`top-four-slot-${index}`}
-              style={{
-                position: 'relative',
-                aspectRatio: '1/1',
-                borderRadius: 0,
-                overflow: 'hidden',
-                background: 'var(--bg-surface-elevated)',
-                border: '1px solid var(--border-subtle)',
-                boxShadow: '0 2px 6px rgba(0, 0, 0, 0.3)',
-                cursor: album ? 'pointer' : 'default'
-              }}
-              onClick={() => album && !isEditing && onOpenAlbum(album.id)}
+              className={`top-four-card ${album ? 'has-album' : 'empty'} ${isSlotActive ? 'is-picking' : ''}`}
             >
-              {album ? (
-                <>
-                  <img
-                    src={album.coverUrl}
-                    alt={album.title}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 0 }}
-                  />
-                  <div style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    padding: '6px 4px 3px',
-                    background: 'linear-gradient(0deg, rgba(9, 10, 13, 0.85) 0%, transparent 100%)',
-                    fontSize: '9px',
-                    fontWeight: 500,
-                    color: '#ffffff',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    textAlign: 'center'
-                  }}>
-                    {album.title}
+              {/* Vinyl Sleeve Container */}
+              <div
+                className="vinyl-sleeve-wrap"
+                onClick={() => {
+                  if (album && !isOwner) {
+                    onOpenAlbum(album.id);
+                  } else if (isOwner) {
+                    setActiveSlot(index);
+                  }
+                }}
+              >
+                {/* Simulated Vinyl Record Edge Peeking */}
+                {album && (
+                  <div className="vinyl-peeking-disc" aria-hidden="true">
+                    <div className="vinyl-groove-rings" />
+                    <div className="vinyl-center-label" />
                   </div>
-                </>
-              ) : (
-                <div style={{
-                  width: '100%',
-                  height: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--text-muted)'
-                }}>
-                  <Plus size={18} strokeWidth={1.5} />
-                </div>
-              )}
+                )}
 
-              {/* Slot Number Badge */}
-              <div style={{
-                position: 'absolute',
-                top: '4px',
-                left: '4px',
-                width: '15px',
-                height: '15px',
-                borderRadius: 0,
-                background: 'rgba(9, 10, 13, 0.7)',
-                backdropFilter: 'blur(4px)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                color: '#ffffff',
-                fontSize: '9px',
-                fontWeight: 600,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                {index + 1}
+                {/* Sleeve Cover or Empty State */}
+                <div className="vinyl-sleeve-front">
+                  {album ? (
+                    <img
+                      src={album.coverUrl}
+                      alt={album.title}
+                      className="vinyl-cover-img"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="vinyl-empty-placeholder">
+                      <Plus size={22} className="empty-plus-icon" />
+                      <span className="empty-add-text">Add #{index + 1}</span>
+                    </div>
+                  )}
+
+                  {/* Rank Badge */}
+                  <span className={`vinyl-rank-badge ${index === 0 ? 'crown-rank' : ''}`}>
+                    #{index + 1}
+                  </span>
+
+                  {/* Quick Edit Overlay for Owners */}
+                  {isOwner && album && (
+                    <div className="vinyl-hover-action" title="Change or remove favorite">
+                      <span>Change</span>
+                    </div>
+                  )}
+                </div>
               </div>
 
-              {/* Edit overlay dropdown trigger */}
-              {isEditing && (
-                <div style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'rgba(0, 0, 0, 0.75)',
-                  backdropFilter: 'blur(2px)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '6px'
-                }}>
-                  <select
-                    id={`select-top-four-${index}`}
-                    style={{ width: '100%', fontSize: '9px', background: '#12141a', color: '#ffffff', border: '1px solid var(--border-subtle)', borderRadius: 0, padding: '2px' }}
-                    value={album?.id || ''}
-                    onChange={(e) => handleSelectAlbumForSlot(index, e.target.value)}
-                  >
-                    <option value="">Choose...</option>
-                    {allAlbums.map(a => (
-                      <option key={a.id} value={a.id}>
-                        {a.title}
-                      </option>
-                    ))}
-                  </select>
+              {/* Album Metadata Underneath */}
+              {album ? (
+                <div
+                  className="top-four-meta"
+                  onClick={() => onOpenAlbum(album.id)}
+                  title={`${album.title} — ${album.artist}`}
+                >
+                  <h4 className="top-four-album-title">{album.title}</h4>
+                  <p className="top-four-artist-name">{album.artist}</p>
+                </div>
+              ) : (
+                <div className="top-four-meta empty-meta">
+                  <span className="empty-slot-label">Empty Slot</span>
                 </div>
               )}
             </div>
           );
         })}
       </div>
+
+      <p className="top-four-footer-hint">
+        Four defining records that capture your soundscape and musical identity.
+      </p>
+
+      {/* Modern Album Picker Modal */}
+      {activeSlot !== null && (
+        <div className="album-picker-backdrop" onClick={() => setActiveSlot(null)}>
+          <div
+            className="album-picker-sheet"
+            onClick={e => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="picker-title"
+          >
+            {/* Header */}
+            <div className="picker-header">
+              <div className="picker-header-titles">
+                <span className="picker-kicker">Slot #{activeSlot + 1} Selection</span>
+                <h3 id="picker-title">Pick Your Favorite Album</h3>
+              </div>
+              <button
+                className="picker-close-btn"
+                onClick={() => setActiveSlot(null)}
+                aria-label="Close album picker"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Search Bar */}
+            <div className="picker-search-bar">
+              <Search size={16} className="picker-search-icon" />
+              <input
+                type="text"
+                className="picker-search-input"
+                placeholder="Search by title, artist, or genre..."
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                autoFocus
+              />
+              {searchQuery && (
+                <button
+                  className="picker-search-clear"
+                  onClick={() => setSearchQuery('')}
+                  aria-label="Clear search"
+                >
+                  <X size={14} />
+                </button>
+              )}
+            </div>
+
+            {/* Filter Pills */}
+            <div className="picker-filter-chips">
+              <button
+                className={`picker-chip ${filterMode === 'all' ? 'active' : ''}`}
+                onClick={() => setFilterMode('all')}
+              >
+                All Catalog ({allAlbums.length})
+              </button>
+              <button
+                className={`picker-chip ${filterMode === 'reviewed' ? 'active' : ''}`}
+                onClick={() => setFilterMode('reviewed')}
+              >
+                Your Reviews ({reviewedAlbumIds.size})
+              </button>
+              <button
+                className={`picker-chip ${filterMode === 'indonesian' ? 'active' : ''}`}
+                onClick={() => setFilterMode('indonesian')}
+              >
+                Indonesian
+              </button>
+            </div>
+
+            {/* Slot Clear Action if slot currently populated */}
+            {topAlbumIds[activeSlot] && (
+              <div className="picker-clear-row">
+                <span className="picker-clear-info">
+                  Current: <strong>{storageService.getAlbumById(topAlbumIds[activeSlot])?.title || 'Selected'}</strong>
+                </span>
+                <button
+                  type="button"
+                  className="picker-remove-btn"
+                  onClick={() => handleClearSlot(activeSlot)}
+                >
+                  <Trash2 size={13} />
+                  Clear this slot
+                </button>
+              </div>
+            )}
+
+            {/* Albums List */}
+            <div className="picker-album-list">
+              {filteredAlbums.length > 0 ? (
+                filteredAlbums.map(item => {
+                  const isSelectedForThisSlot = topAlbumIds[activeSlot] === item.id;
+                  const isAssignedElsewhere =
+                    topAlbumIds.includes(item.id) && !isSelectedForThisSlot;
+
+                  return (
+                    <div
+                      key={item.id}
+                      className={`picker-album-row ${isSelectedForThisSlot ? 'is-selected' : ''}`}
+                      onClick={() => handleSelectAlbum(item.id)}
+                    >
+                      <img
+                        src={item.coverUrl}
+                        alt={item.title}
+                        className="picker-album-cover"
+                        loading="lazy"
+                      />
+                      <div className="picker-album-info">
+                        <div className="picker-album-title-line">
+                          <h4>{item.title}</h4>
+                          {item.isIndonesian && (
+                            <span className="picker-indo-badge">Indo</span>
+                          )}
+                        </div>
+                        <p className="picker-album-sub">
+                          {item.artist} • {item.releaseYear}
+                          {item.genres && item.genres.length > 0 && ` • ${item.genres[0]}`}
+                        </p>
+                      </div>
+
+                      <div className="picker-row-actions">
+                        {isSelectedForThisSlot ? (
+                          <span className="picker-selected-pill">
+                            <Check size={12} /> Selected
+                          </span>
+                        ) : isAssignedElsewhere ? (
+                          <span className="picker-assigned-pill">
+                            In Slot #{topAlbumIds.indexOf(item.id) + 1}
+                          </span>
+                        ) : (
+                          <button
+                            type="button"
+                            className="picker-select-btn"
+                            onClick={e => {
+                              e.stopPropagation();
+                              handleSelectAlbum(item.id);
+                            }}
+                          >
+                            Set #{activeSlot + 1}
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="picker-empty-state">
+                  <Disc3 size={32} className="picker-empty-disc" />
+                  <h4>No albums found</h4>
+                  <p>Try searching for a different artist or release title.</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

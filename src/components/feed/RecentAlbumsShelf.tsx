@@ -21,16 +21,15 @@ export const RecentAlbumsShelf: React.FC<RecentAlbumsShelfProps> = ({
   if (!albums || albums.length === 0) return null;
 
   const getScoreData = (album: Album) => {
-    return Number.isFinite(album.averageRating) && album.averageRating > 0
-      ? Math.min(100, Math.round(album.averageRating * 20))
-      : null;
+    if (!Number.isFinite(album.averageRating) || album.averageRating <= 0) return null;
+    return (album.averageRating <= 5 ? album.averageRating * 2 : album.averageRating).toFixed(1);
   };
 
   return (
     <section className="feed-recent-albums-section" aria-label="Recent Albums">
       {/* Header with Title & AOTY-inspired See All */}
       <div className="feed-recent-albums-header">
-        <h2 className="feed-recent-albums-title">Recent Albums</h2>
+        <h2 className="feed-recent-albums-title">Recent Releases</h2>
         {onSeeAll && (
           <button
             className="feed-see-all-btn"
@@ -104,11 +103,11 @@ export const RecentAlbumsShelf: React.FC<RecentAlbumsShelfProps> = ({
                 <div className="recent-album-scores">
                   {score !== null ? (
                     <>
-                      <span className="album-rating-badge" aria-label={`${score} out of 100`}>
-                        {score}<span>/100</span>
+                      <span className="album-rating-badge" aria-label={`${score} out of 10`}>
+                        {score}<span>/10</span>
                       </span>
                       <span className="album-rating-caption">
-                        <span>Listener score</span>
+                        <span>Community score</span>
                         {ratingCount > 0 && <span>{new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 }).format(ratingCount)} {ratingCount === 1 ? 'rating' : 'ratings'}</span>}
                       </span>
                     </>

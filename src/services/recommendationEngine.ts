@@ -30,7 +30,7 @@ export const recommendationEngine = {
     const indonesianSpotlight: Recommendation[] = indonesianAlbums.slice(0, 4).map(album => ({
       album,
       score: 98,
-      reason: `Rilisan Pilihan Musik Indonesia • ${album.genres[0] || 'Indo Pop'}`,
+      reason: `Skena Nusantara • ${album.genres[0] || 'Pop'}`,
       matchType: 'indonesian_spotlight' as const
     }));
 
@@ -52,7 +52,7 @@ export const recommendationEngine = {
             basedOnReviews.push({
               album: candidate,
               score: Math.round(88 + Math.random() * 10),
-              reason: `Berdasarkan ulasan rating ${topReview.rating} untuk "${sourceAlbum.title}"`,
+              reason: `Ulasan ${topReview.rating}★ "${sourceAlbum.title}"`,
               matchType: 'high_rating',
               basedOnItem: sourceAlbum.title
             });
@@ -61,43 +61,52 @@ export const recommendationEngine = {
       }
     }
 
+    const spotlightIds = new Set(indonesianSpotlight.map(r => r.album.id));
+
     if (basedOnReviews.length === 0) {
-      albums.slice(0, 3).forEach(album => {
+      const nonSpotlight = albums.filter(a => !spotlightIds.has(a.id) && !reviewedAlbumIds.has(a.id));
+      const pool = nonSpotlight.length >= 3 ? nonSpotlight : albums;
+      pool.slice(0, 3).forEach(album => {
         basedOnReviews.push({
           album,
           score: 92,
-          reason: `Rekomendasi terpopuler kategori ${album.genres[0] || 'Musik'}`,
+          reason: `Pilihan Top • ${album.genres[0] || 'Pop'}`,
           matchType: 'high_rating'
         });
       });
     }
+
+    const usedIds = new Set([...spotlightIds, ...basedOnReviews.map(r => r.album.id)]);
 
     // 3. RECOMMENDATIONS BASED ON LISTENING HISTORY / SCROBBLES
     const basedOnHistory: Recommendation[] = [];
     const recentArtists = Array.from(new Set(scrobbles.map(s => s.artist)));
 
     for (const artist of recentArtists) {
-      const artistAlbums = albums.filter(a => a.artist.toLowerCase() === artist.toLowerCase() && !reviewedAlbumIds.has(a.id));
+      const artistAlbums = albums.filter(a => a.artist.toLowerCase() === artist.toLowerCase() && !reviewedAlbumIds.has(a.id) && !usedIds.has(a.id));
       for (const album of artistAlbums) {
         basedOnHistory.push({
           album,
           score: 95,
-          reason: `Sering kamu dengar minggu ini: ${artist}`,
+          reason: `Sering diputar • ${artist}`,
           matchType: 'listening_history',
           basedOnItem: artist
         });
+        usedIds.add(album.id);
       }
     }
 
     // Add candidate diversity
-    const remaining = albums.filter(a => !basedOnHistory.some(r => r.album.id === a.id));
-    for (const album of remaining.slice(0, 3)) {
+    const remaining = albums.filter(a => !usedIds.has(a.id) && !reviewedAlbumIds.has(a.id));
+    const historyPool = remaining.length >= 3 ? remaining : albums.filter(a => !basedOnHistory.some(r => r.album.id === a.id));
+    for (const album of historyPool.slice(0, 3)) {
       basedOnHistory.push({
         album,
         score: Math.round(82 + Math.random() * 12),
-        reason: album.isIndonesian ? 'Eksplorasi Skena Musik Lokal' : 'Discovered from listening habits',
+        reason: album.isIndonesian ? 'Eksplorasi Skena' : 'Discovery Radar',
         matchType: 'listening_history'
       });
+      usedIds.add(album.id);
     }
 
     // 4. TASTE TUNER PICKS

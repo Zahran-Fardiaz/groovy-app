@@ -1,20 +1,26 @@
 import React, { useState, useMemo } from 'react';
-import { Sparkles, Radio, Heart, Award, ArrowRight, Disc } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { Recommendation, TasteTunerSettings } from '../types/music';
 import { recommendationEngine } from '../services/recommendationEngine';
 import { storageService } from '../services/storageService';
 import { useScrobble } from '../context/ScrobbleContext';
 import { TasteTuner } from '../components/recommendations/TasteTuner';
+import './RecommendationsView.css';
 
 interface RecommendationsViewProps {
   onOpenAlbum: (albumId: string) => void;
+  embedded?: boolean;
+  activeSection?: 'all' | 'tuner';
 }
 
-export const RecommendationsView: React.FC<RecommendationsViewProps> = ({ onOpenAlbum }) => {
+export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
+  onOpenAlbum,
+  embedded,
+  activeSection = 'all'
+}) => {
   const { scrobbles } = useScrobble();
   const albums = storageService.getAlbums();
   const reviews = storageService.getReviews();
-
   const [tunerSettings, setTunerSettings] = useState<TasteTunerSettings>({
     obscurity: 45,
     energy: 65,
@@ -22,156 +28,138 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({ onOpen
     mood: 50
   });
 
-  const recommendations = useMemo(() => {
-    return recommendationEngine.getRecommendations(albums, reviews, scrobbles, tunerSettings);
-  }, [albums, reviews, scrobbles, tunerSettings]);
-
-  const renderRecommendationCard = (item: Recommendation) => (
-    <div
-      key={item.album.id}
-      id={`recommendation-card-${item.album.id}`}
-      style={{
-        background: 'var(--bg-surface)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: 0,
-        padding: '12px',
-        marginBottom: '10px',
-        display: 'flex',
-        gap: '12px',
-        alignItems: 'center',
-        cursor: 'pointer',
-        transition: 'transform var(--transition-fast), border-color var(--transition-fast)',
-        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)'
-      }}
-      onClick={() => onOpenAlbum(item.album.id)}
-    >
-      <img
-        src={item.album.coverUrl}
-        alt={item.album.title}
-        style={{
-          width: '60px',
-          height: '60px',
-          borderRadius: 0,
-          objectFit: 'cover',
-          flexShrink: 0,
-          border: '1px solid rgba(255, 255, 255, 0.08)'
-        }}
-      />
-
-      <div style={{ flex: 1, minWidth: 0 }}>
-        {/* Reasoning Pill */}
-        <div style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '4px',
-          background: 'rgba(255, 255, 255, 0.05)',
-          border: '1px solid var(--border-subtle)',
-          color: 'var(--text-secondary)',
-          fontSize: '10px',
-          fontWeight: 500,
-          padding: '2px 8px',
-          borderRadius: 0,
-          marginBottom: '4px',
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          maxWidth: '100%'
-        }}>
-          <Sparkles size={9} /> {item.reason}
-        </div>
-
-        <div style={{ fontSize: '13px', fontWeight: 600, color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          {item.album.title}
-        </div>
-        <div style={{ fontSize: '11px', color: 'var(--text-secondary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          {item.album.artist} • {item.album.genres[0]}
-        </div>
-      </div>
-
-      <div style={{ color: 'var(--text-muted)' }}>
-        <ArrowRight size={15} />
-      </div>
-    </div>
+  const recommendations = useMemo(
+    () => recommendationEngine.getRecommendations(albums, reviews, scrobbles, tunerSettings),
+    [albums, reviews, scrobbles, tunerSettings]
   );
 
-  return (
-    <div style={{ padding: '0 16px' }}>
-      {/* Header Banner */}
-      <div style={{
-        background: 'rgba(255, 255, 255, 0.03)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: 0,
-        padding: '16px',
-        margin: '14px 0 18px'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-          <Sparkles size={16} color="#ffffff" />
-          <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#ffffff', letterSpacing: '-0.01em' }}>
-            Taste Intelligence
-          </h3>
-        </div>
-        <p style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
-          Personalized selections synthesized from your top ratings, active listening scrobbles, and sonic preferences.
-        </p>
-      </div>
+  const featured = recommendations.indonesianSpotlight[0];
 
-      {/* Section 1: Indonesian Music Spotlight */}
-      {recommendations.indonesianSpotlight.length > 0 && (
-        <section style={{ marginBottom: '22px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
-            <Disc size={14} color="var(--accent)" />
-            <h4 style={{ fontSize: '12px', fontWeight: 600, color: '#ffffff' }}>
-              Indonesian Spotlight
-            </h4>
+  const sections = [
+    { id: 'spotlight', title: 'Indonesian Spotlight', items: recommendations.indonesianSpotlight.slice(1) },
+    { id: 'reviews', title: 'Based on Your Top Reviews', items: recommendations.basedOnReviews },
+    { id: 'radar', title: 'Discovery Radar', items: recommendations.basedOnHistory },
+    { id: 'trending', title: 'Community Favorites', items: recommendations.trendingCommunity },
+  ];
+
+  const score = (item: Recommendation) => {
+    if (typeof item.score !== 'number') return null;
+    return (item.score / 10).toFixed(1);
+  };
+
+  const renderCard = (item: Recommendation) => (
+    <button
+      key={item.album.id}
+      id={'recommendation-card-' + item.matchType + '-' + item.album.id}
+      className="rec-album-card"
+      onClick={() => onOpenAlbum(item.album.id)}
+    >
+      <div className="rec-album-sleeve">
+        <img src={item.album.coverUrl} alt={item.album.title + ' cover'} loading="lazy" />
+      </div>
+      <span className="rec-album-artist" title={item.album.artist}>{item.album.artist}</span>
+      <h4 className="rec-album-title" title={item.album.title}>{item.album.title}</h4>
+      <div className="rec-album-score">
+        {score(item) !== null && <span className="album-rating-badge">{score(item)}<span>/10</span></span>}
+        <span className="rec-match-caption">Taste match</span>
+      </div>
+      <p className="rec-album-reason" title={item.reason}>{item.reason}</p>
+    </button>
+  );
+
+  // Dedicated Sonic Tuner Section
+  if (activeSection === 'tuner') {
+    return (
+      <div className={embedded ? 'recommendations-embedded' : 'recommendations-page'}>
+        <section className="rec-section" style={{ marginTop: '8px' }}>
+          <TasteTuner settings={tunerSettings} onChange={setTunerSettings} />
+        </section>
+
+        <section className="rec-section" aria-labelledby="rec-heading-tuner">
+          <div className="goty-section-label">
+            <h2 id="rec-heading-tuner">Tuned to Your Taste</h2>
+            <span>{recommendations.tasteTunerPicks.length} picks</span>
           </div>
-          {recommendations.indonesianSpotlight.map(renderRecommendationCard)}
+          {recommendations.tasteTunerPicks.length > 0 ? (
+            <div className="rec-album-grid">
+              {recommendations.tasteTunerPicks.map(renderCard)}
+            </div>
+          ) : (
+            <div className="rec-empty-state">
+              <h3>Belum ada rekomendasi yang cocok</h3>
+              <p>Coba sesuaikan slider preferensi audio di atas untuk menjelajah spektrum musik baru.</p>
+            </div>
+          )}
+        </section>
+      </div>
+    );
+  }
+
+  // Default All Picks Section
+  return (
+    <div className={embedded ? 'recommendations-embedded' : 'recommendations-page'}>
+      {featured && (
+        <section className="rec-section" aria-labelledby="rec-featured-heading">
+          <div className="goty-section-label">
+            <h2 id="rec-featured-heading">Your Next Favorite</h2>
+            <span>Picked for you</span>
+          </div>
+          <button
+            className="goty-banner"
+            id={'featured-spotlight-' + featured.album.id}
+            onClick={() => onOpenAlbum(featured.album.id)}
+          >
+            <div className="goty-content">
+              <img className="goty-art" src={featured.album.coverUrl} alt={featured.album.title + ' cover'} />
+              <div className="goty-text">
+                <span className="goty-release-type">Indonesian selection</span>
+                <h3 className="goty-title">{featured.album.title}</h3>
+                <p className="goty-artist">{featured.album.artist}</p>
+                <p className="goty-genres">{featured.album.genres.slice(0, 2).join(' · ')}</p>
+              </div>
+            </div>
+            <div className="goty-footer">
+              <div className="goty-score-row">
+                {score(featured) !== null && <span className="goty-score">{score(featured)}<span>/10</span></span>}
+                <div className="goty-rating-meta">
+                  <span>Taste match</span>
+                  <span>Based on your listening</span>
+                </div>
+              </div>
+              <span className="goty-open">View release <ArrowUpRight size={15} /></span>
+            </div>
+          </button>
+          <p className="rec-featured-note">{featured.reason}</p>
         </section>
       )}
 
-      {/* Section 2: Based on Your Top Reviews */}
-      <section style={{ marginBottom: '22px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
-          <Award size={14} color="var(--accent)" />
-          <h4 style={{ fontSize: '12px', fontWeight: 600, color: '#ffffff' }}>
-            Because You Loved Your 5-Star Reviews
-          </h4>
-        </div>
-        {recommendations.basedOnReviews.map(renderRecommendationCard)}
-      </section>
-
-      {/* Section 3: Interactive Taste Tuner Sliders */}
-      <section style={{ marginBottom: '22px' }}>
-        <TasteTuner settings={tunerSettings} onChange={setTunerSettings} />
-
-        <div style={{ marginTop: '12px' }}>
-          <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-            Tuner Matches
-          </div>
-          {recommendations.tasteTunerPicks.map(renderRecommendationCard)}
-        </div>
-      </section>
-
-      {/* Section 4: Based on Listening History / Scrobbles */}
-      <section style={{ marginBottom: '22px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
-          <Radio size={14} color="var(--accent)" />
-          <h4 style={{ fontSize: '12px', fontWeight: 600, color: '#ffffff' }}>
-            Discovery Radar
-          </h4>
-        </div>
-        {recommendations.basedOnHistory.map(renderRecommendationCard)}
-      </section>
-
-      {/* Section 5: Community Favorites */}
-      <section style={{ marginBottom: '22px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
-          <Heart size={14} color="var(--accent)" />
-          <h4 style={{ fontSize: '12px', fontWeight: 600, color: '#ffffff' }}>
-            Trending in Community
-          </h4>
-        </div>
-        {recommendations.trendingCommunity.map(renderRecommendationCard)}
-      </section>
+      {sections.map(section => (
+        <React.Fragment key={section.id}>
+          {section.items.length > 0 ? (
+            <section className="rec-section" aria-labelledby={'rec-heading-' + section.id}>
+              <div className="goty-section-label">
+                <h2 id={'rec-heading-' + section.id}>{section.title}</h2>
+                <span>{section.items.length} picks</span>
+              </div>
+              <div className="rec-album-grid">{section.items.map(renderCard)}</div>
+            </section>
+          ) : (
+            <div className="rec-empty-state">
+              <h3>More music, more discoveries.</h3>
+              <p>
+                {section.id === 'reviews'
+                  ? 'Rate a few favorites to find music inspired by your reviews.'
+                  : section.id === 'radar'
+                  ? 'Log your listening to start discovering related releases.'
+                  : 'New picks will appear here as your music collection grows.'}
+              </p>
+            </div>
+          )}
+        </React.Fragment>
+      ))}
+      <p className="rec-page-note">Your picks evolve with every review and listen.</p>
     </div>
   );
 };
+
+export default RecommendationsView;

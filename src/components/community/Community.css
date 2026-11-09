@@ -1,0 +1,978 @@
+/* ========================================================
+   GROOVY COMMUNITY / THREADS COMPONENT STYLES
+   Harmonized with Groovy Design System (GDS / Sonic Aura)
+   ======================================================== */
+
+/* 1. Community View Root & Header */
+.community-view-root {
+  min-height: 100%;
+  padding-bottom: 110px;
+  box-sizing: border-box;
+}
+
+.community-view-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 16px 12px;
+}
+
+.community-view-eyebrow {
+  font-family: var(--gds-font-sans, sans-serif);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--gds-accent-citron, #d4ff32);
+  margin-bottom: 3px;
+}
+
+.community-view-title {
+  font-family: var(--gds-font-display, var(--font-display, sans-serif));
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.community-live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 13px;
+  border-radius: 9999px;
+  background: rgba(212, 255, 50, 0.08);
+  border: 1px solid rgba(212, 255, 50, 0.28);
+  color: var(--gds-accent-citron, #d4ff32);
+  font-family: var(--gds-font-sans, sans-serif);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  user-select: none;
+}
+
+.community-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gds-accent-citron, #d4ff32);
+  box-shadow: 0 0 10px var(--gds-accent-citron, #d4ff32);
+  animation: liveDotPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes liveDotPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.85);
+  }
+}
+
+/* 2. Top Underline Tab Navigation Bar (Threads / X style, matching reference) */
+.community-tabs-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin-bottom: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  position: sticky;
+  top: 0;
+  background: rgba(7, 9, 14, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 30;
+}
+
+.community-tab-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 14px 0 15px;
+  color: #94a3b8;
+  font-family: var(--gds-font-sans, sans-serif);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.18s ease;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.community-tab-btn:hover {
+  color: #ffffff;
+}
+
+.community-tab-btn.active {
+  color: #ffffff;
+  font-weight: 750;
+}
+
+.community-tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 26%;
+  right: 26%;
+  height: 3px;
+  background: var(--gds-accent-citron, #d4ff32);
+  border-radius: 9999px;
+  box-shadow: 0 0 12px var(--gds-accent-citron-glow, rgba(212, 255, 50, 0.45));
+}
+
+.community-following-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1px 7px;
+  border-radius: 9999px;
+  background: rgba(212, 255, 50, 0.16);
+  color: var(--gds-accent-citron, #d4ff32);
+  font-size: 11px;
+  font-weight: 850;
+  line-height: 1.4;
+}
+
+.community-tab-tag-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.community-tab-tag-close:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* 3. Inline Composer Card (Groovy card style) */
+.community-composer-card {
+  margin: 0 16px 16px;
+  padding: 12px 14px;
+  background: #000000;
+  border: 1px solid var(--gds-border-medium, rgba(255, 255, 255, 0.12));
+  border-radius: var(--gds-radius-lg, 16px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.community-composer-card:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: #08090d;
+  transform: translateY(-1px);
+}
+
+.composer-user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--gds-bg-surface-3, #242a3a);
+  border: 1px solid var(--gds-border-subtle, rgba(255, 255, 255, 0.1));
+  flex-shrink: 0;
+}
+
+.composer-prompt-text {
+  flex: 1;
+  font-family: var(--gds-font-sans, sans-serif);
+  font-size: 13px;
+  color: var(--gds-text-muted, #94a3b8);
+  user-select: none;
+}
+
+.composer-cta-badge {
+  font-family: var(--gds-font-sans, sans-serif);
+  font-size: 12px;
+  font-weight: 750;
+  background: var(--gds-accent-citron, #d4ff32);
+  color: #0b0d13;
+  padding: 6px 13px;
+  border-radius: 9999px;
+  letter-spacing: -0.01em;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 10px rgba(212, 255, 50, 0.25);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.community-composer-card:hover .composer-cta-badge {
+  transform: scale(1.03);
+  background: var(--gds-accent-citron-hover, #e0ff54);
+}
+
+/* 4. Community Threads Stream (Threads / X / Reddit Minimalist Flat Stream) */
+.community-threads-list {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.community-thread-row {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.community-thread-row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.thread-avatar-col {
+  flex-shrink: 0;
+}
+
+.thread-avatar-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #181b26;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.thread-content-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.thread-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.thread-user-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  line-height: 1.2;
+}
+
+.thread-author-name {
+  font-size: 14.5px;
+  font-weight: 750;
+  color: #ffffff;
+}
+
+.thread-author-handle {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.thread-meta-sep {
+  font-size: 13px;
+  color: #475569;
+}
+
+.thread-timestamp {
+  font-size: 12.5px;
+  color: #64748b;
+}
+
+.thread-text-body {
+  font-family: var(--gds-font-sans, sans-serif);
+  font-size: 14px;
+  line-height: 1.55;
+  color: #e2e8f0;
+  word-break: break-word;
+}
+
+.thread-hashtag {
+  color: var(--gds-accent-citron, #d4ff32);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.thread-hashtag:hover {
+  text-decoration: underline;
+}
+
+/* Compact embedded music card */
+.thread-music-embed-card {
+  margin-top: 4px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.thread-music-embed-card:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.thread-music-embed-art {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.thread-music-embed-meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.thread-music-embed-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.thread-music-embed-artist {
+  font-size: 11.5px;
+  color: #94a3b8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.thread-music-embed-score {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 750;
+  color: var(--gds-accent-citron, #d4ff32);
+}
+
+/* Action buttons bar */
+.thread-actions-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 300px;
+  margin-top: 6px;
+  padding-top: 2px;
+}
+
+.thread-action-btn {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 550;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: color 0.15s ease;
+}
+
+.thread-action-btn:hover {
+  color: #cbd5e1;
+}
+
+.thread-action-btn.is-liked {
+  color: #ef4444;
+}
+
+.thread-action-btn.is-reposted {
+  color: var(--gds-accent-citron, #d4ff32);
+}
+
+/* Thread Hot Take Badge */
+.thread-hottake-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  background: rgba(255, 107, 53, 0.12);
+  border: 1px solid rgba(255, 107, 53, 0.35);
+  color: var(--gds-accent-ember, #ff6b35);
+  font-size: 10px;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Thread Body Content */
+.thread-body-text {
+  font-family: var(--gds-font-sans, sans-serif);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #e2e8f0;
+  word-break: break-word;
+  white-space: pre-line;
+  margin-top: 2px;
+  margin-bottom: 8px;
+}
+
+.thread-hashtag {
+  color: var(--gds-accent-citron, #d4ff32);
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.thread-hashtag:hover {
+  text-decoration: underline;
+  opacity: 0.85;
+}
+
+/* 6. Embedded Music Card (Groovy Vinyl Sleeve Style) */
+.thread-music-embed {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: #08090d;
+  border: 1px solid var(--gds-border-subtle, rgba(255, 255, 255, 0.08));
+  border-radius: var(--gds-radius-md, 12px);
+  margin: 4px 0 10px;
+  transition: all 0.18s ease;
+  cursor: pointer;
+}
+
+.thread-music-embed:hover {
+  background: #0f1118;
+  border-color: rgba(212, 255, 50, 0.35);
+  transform: translateX(2px);
+}
+
+.thread-music-thumb-wrap {
+  width: 50px;
+  height: 50px;
+  border-radius: var(--gds-radius-sm, 8px);
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.thread-music-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.22s ease;
+}
+
+.thread-music-embed:hover .thread-music-thumb-img {
+  transform: scale(1.05);
+}
+
+.thread-music-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.thread-music-title {
+  font-family: var(--gds-font-sans, sans-serif);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.thread-music-artist {
+  font-size: 11.5px;
+  color: var(--gds-text-secondary, #94a3b8);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.thread-music-open-tag {
+  color: var(--gds-text-muted, #64748b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 50%;
+  transition: color 0.15s ease;
+}
+
+.thread-music-embed:hover .thread-music-open-tag {
+  color: var(--gds-accent-citron, #d4ff32);
+}
+
+/* 7. Floating Action Button (FAB) */
+.community-fab-btn {
+  position: fixed;
+  bottom: 82px;
+  right: calc(50% - 190px + 16px);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--gds-accent-citron, #d4ff32);
+  color: #0b0d13;
+  border: none;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.6), 0 0 16px var(--gds-accent-citron-glow, rgba(212, 255, 50, 0.3));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 45;
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (max-width: 480px) {
+  .community-fab-btn {
+    right: 20px;
+  }
+}
+
+.community-fab-btn:hover {
+  transform: scale(1.1) rotate(6deg);
+  background: var(--gds-accent-citron-hover, #e0ff54);
+}
+
+.community-fab-btn:active {
+  transform: scale(0.95);
+}
+
+/* 8. Create Thread Modal & Drawer (Matches ReviewModal.css) */
+.create-thread-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: fadeIn 0.22s ease-out;
+}
+
+@media (min-width: 500px) {
+  .create-thread-overlay {
+    align-items: center;
+    padding: 20px;
+  }
+}
+
+.create-thread-card {
+  background: #090a0d;
+  border: 1px solid var(--gds-border-medium, rgba(255, 255, 255, 0.12));
+  border-radius: 24px 24px 0 0;
+  width: 100%;
+  max-width: 460px;
+  max-height: 86vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 20px 20px;
+  box-shadow: 0 -16px 48px rgba(0, 0, 0, 0.85);
+  animation: slideUp 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: var(--gds-font-sans, sans-serif);
+}
+
+@media (min-width: 500px) {
+  .create-thread-card {
+    border-radius: 24px;
+    max-height: 82vh;
+  }
+}
+
+.modal-sheet-handle {
+  width: 34px;
+  height: 4px;
+  margin: 0 auto 12px;
+  background: #343840;
+  border-radius: 99px;
+  flex-shrink: 0;
+}
+
+.create-thread-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--gds-border-subtle, rgba(255, 255, 255, 0.08));
+}
+
+.create-thread-title {
+  font-family: var(--gds-font-display, var(--font-display, sans-serif));
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #ffffff;
+}
+
+.create-thread-close-btn {
+  background: #14161f;
+  border: 1px solid var(--gds-border-subtle, rgba(255, 255, 255, 0.1));
+  color: var(--gds-text-secondary, #94a3b8);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+
+.create-thread-close-btn:hover {
+  background: #202430;
+  color: #ffffff;
+}
+
+.create-thread-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.create-thread-textarea {
+  width: 100%;
+  min-height: 110px;
+  background: #12141a;
+  border: 1px solid var(--gds-border-medium, rgba(255, 255, 255, 0.12));
+  border-radius: 12px;
+  padding: 12px;
+  color: #ffffff;
+  font-family: var(--gds-font-sans, sans-serif);
+  font-size: 14px;
+  line-height: 1.55;
+  resize: none;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.18s ease;
+}
+
+.create-thread-textarea:focus {
+  border-color: var(--gds-accent-citron, #d4ff32);
+}
+
+.create-thread-textarea::placeholder {
+  color: var(--gds-text-muted, #64748b);
+}
+
+/* Music tag selector */
+.music-tag-section {
+  margin: 12px 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.music-tag-search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #12141a;
+  border: 1px solid var(--gds-border-medium, rgba(255, 255, 255, 0.12));
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+
+.music-tag-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-family: var(--gds-font-sans, sans-serif);
+  font-size: 13px;
+}
+
+.music-tag-dropdown {
+  max-height: 150px;
+  overflow-y: auto;
+  background: #000000;
+  border: 1px solid var(--gds-border-medium, rgba(255, 255, 255, 0.15));
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 4px;
+}
+
+.music-tag-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--gds-border-subtle, rgba(255, 255, 255, 0.08));
+  transition: background 0.15s ease;
+}
+
+.music-tag-item:last-child {
+  border-bottom: none;
+}
+
+.music-tag-item:hover {
+  background: rgba(212, 255, 50, 0.06);
+}
+
+.music-tag-selected-badge {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #000000;
+  border: 1px solid rgba(212, 255, 50, 0.35);
+  padding: 8px 12px;
+  border-radius: 10px;
+}
+
+/* Quick hashtag suggestion chips */
+.hashtag-chips-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 4px 0 8px;
+}
+.hashtag-chips-row::-webkit-scrollbar {
+  display: none;
+}
+
+.hashtag-chip {
+  padding: 4px 10px;
+  border-radius: 9999px;
+  background: #14161f;
+  border: 1px solid var(--gds-border-subtle, rgba(255, 255, 255, 0.1));
+  color: var(--gds-text-secondary, #94a3b8);
+  font-size: 11.5px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.hashtag-chip:hover {
+  border-color: var(--gds-accent-citron, #d4ff32);
+  color: var(--gds-accent-citron, #d4ff32);
+}
+
+/* Composer footer */
+.create-thread-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--gds-border-subtle, rgba(255, 255, 255, 0.08));
+}
+
+.char-counter {
+  font-size: 11.5px;
+  color: var(--gds-text-muted, #64748b);
+}
+.char-counter.warning {
+  color: #ff9800;
+}
+.char-counter.danger {
+  color: #ff4d6d;
+}
+
+.publish-thread-btn {
+  background: var(--gds-accent-citron, #d4ff32);
+  color: #0b0d13;
+  border: none;
+  padding: 9px 20px;
+  border-radius: 9999px;
+  font-family: var(--gds-font-sans, sans-serif);
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.publish-thread-btn:hover:not(:disabled) {
+  background: var(--gds-accent-citron-hover, #e0ff54);
+  transform: scale(1.02);
+}
+
+.publish-thread-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* 9. Replies Modal / Drawer */
+.thread-replies-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: fadeIn 0.22s ease-out;
+}
+
+@media (min-width: 500px) {
+  .thread-replies-overlay {
+    align-items: center;
+    padding: 20px;
+  }
+}
+
+.thread-replies-card {
+  background: #090a0d;
+  border: 1px solid var(--gds-border-medium, rgba(255, 255, 255, 0.12));
+  border-radius: 24px 24px 0 0;
+  width: 100%;
+  max-width: 460px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 20px 20px;
+  box-shadow: 0 -16px 48px rgba(0, 0, 0, 0.85);
+  animation: slideUp 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: var(--gds-font-sans, sans-serif);
+}
+
+@media (min-width: 500px) {
+  .thread-replies-card {
+    border-radius: 24px;
+    max-height: 82vh;
+  }
+}
+
+.thread-replies-scroll {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 10px 0;
+  padding-right: 4px;
+}
+
+.single-reply-item {
+  display: flex;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.single-reply-item:last-child {
+  border-bottom: none;
+}
+
+.reply-input-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #12141a;
+  border: 1px solid var(--gds-border-medium, rgba(255, 255, 255, 0.12));
+  border-radius: 9999px;
+  padding: 5px 6px 5px 14px;
+  margin-top: 8px;
+}
+
+.reply-input-field {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-family: var(--gds-font-sans, sans-serif);
+  font-size: 13px;
+}
+
+.reply-send-btn {
+  background: var(--gds-accent-citron, #d4ff32);
+  color: #0b0d13;
+  border: none;
+  padding: 7px 16px;
+  border-radius: 9999px;
+  font-family: var(--gds-font-sans, sans-serif);
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.reply-send-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Animations */
+@keyframes heartPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Toast */
+.community-toast {
+  position: fixed;
+  bottom: 96px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #000000;
+  border: 1px solid var(--gds-accent-citron, #d4ff32);
+  color: #ffffff;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  font-family: var(--gds-font-sans, sans-serif);
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7);
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: fadeIn 0.2s ease;
+}

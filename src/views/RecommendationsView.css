@@ -1,0 +1,163 @@
+.recommendations-page { padding: 16px 16px 32px; }
+.recommendations-embedded { padding: 6px 16px 32px; }
+.rec-category-section { margin-bottom: 24px; }
+.rec-category-section > h2 { margin-bottom: 12px; }
+.rec-section { margin-bottom: 28px; }
+.rec-featured-note { margin-top: 10px; color: var(--gds-text-muted); font-size: 10px; line-height: 1.6; }
+.rec-album-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 14px; }
+.rec-album-card { display: flex; flex-direction: column; min-width: 0; text-align: left; background: none; border: 0; color: var(--gds-text-primary); font-family: var(--gds-font-sans); cursor: pointer; }
+.rec-album-sleeve { width: 100%; aspect-ratio: 1; overflow: hidden; background: #000; border: 1px solid var(--gds-border-subtle); border-radius: var(--gds-radius-sm); margin-bottom: 10px; }
+.rec-album-sleeve img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .2s; }
+.rec-album-card:hover img { transform: scale(1.035); }
+.rec-album-artist { font-size: 11px; color: var(--gds-text-secondary); margin-bottom: 3px; }
+.rec-album-title { font-size: 13px; font-weight: 700; line-height: 1.4; }
+.rec-album-title, .rec-album-artist { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rec-album-score { display: flex; align-items: center; gap: 8px; margin-top: 9px; }
+.rec-match-caption { font-size: 9px; color: var(--gds-text-secondary); }
+.rec-album-reason { color: var(--gds-text-muted); font-size: 9px; line-height: 1.5; margin-top: 7px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.rec-page-note { text-align: center; color: var(--gds-text-muted); font-size: 10px; }
+.rec-empty-state { padding: 24px 16px; margin-bottom: 28px; border: 1px dashed var(--gds-border-medium); border-radius: var(--gds-radius-lg); text-align: center; }
+.rec-empty-state h3 { font-size: 14px; margin-bottom: 8px; }
+.rec-empty-state p { color: var(--gds-text-secondary); font-size: 12px; line-height: 1.6; }
+/* Modern Sonic Preferences (Taste Tuner) */
+.taste-tuner-card {
+  background: #000000;
+  border: 1px solid var(--gds-border-medium, rgba(255, 255, 255, 0.12));
+  border-radius: var(--gds-radius-lg, 16px);
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+  font-family: var(--gds-font-sans, sans-serif);
+}
+
+.taste-tuner-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--gds-border-subtle, rgba(255, 255, 255, 0.08));
+  margin-bottom: 20px;
+}
+
+.taste-tuner-title {
+  font-family: var(--gds-font-display, var(--font-display, sans-serif));
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #ffffff;
+  margin: 0 0 4px;
+  line-height: 1.2;
+}
+
+.taste-tuner-subtitle {
+  font-size: 11.5px;
+  color: var(--gds-text-muted, #64748b);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.taste-tuner-reset-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--gds-border-medium, rgba(255, 255, 255, 0.15));
+  border-radius: 9999px;
+  padding: 5px 14px;
+  color: var(--gds-text-secondary, #94a3b8);
+  font-family: var(--gds-font-sans, sans-serif);
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.16s ease;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.taste-tuner-reset-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+}
+
+.taste-tuner-reset-btn:active {
+  transform: scale(0.96);
+}
+
+.tuner-sliders-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tuner-slider-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.tuner-slider-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.tuner-label-left {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #cbd5e1;
+  letter-spacing: -0.01em;
+}
+
+.tuner-label-val {
+  font-size: 12px;
+  font-weight: 750;
+  color: var(--gds-accent-citron, #d4ff32);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.tuner-range-input {
+  width: 100%;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 9999px;
+  outline: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.tuner-range-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3px solid #000000;
+  box-shadow: 0 0 10px rgba(212, 255, 50, 0.6), 0 2px 6px rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.tuner-range-input::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 14px rgba(212, 255, 50, 0.9), 0 2px 8px rgba(0, 0, 0, 0.9);
+}
+
+.tuner-range-input::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3px solid #000000;
+  box-shadow: 0 0 10px rgba(212, 255, 50, 0.6);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.recommendations-page button:focus-visible, .tuner-range-input:focus-visible { outline: 2px solid var(--gds-accent-citron); outline-offset: 4px; }
+@media (max-width: 360px) { .rec-album-score { gap: 5px; } .rec-match-caption { font-size: 8px; } .tuner-slider-meta { font-size: 9px; } }

@@ -1,0 +1,1422 @@
+/* =========================================================
+   GROOVY PROFILE — AKARI INSPIRATION DESIGN SYSTEM
+   Primary Brand Accent: Electric Citron / Lime (#d4ff32)
+   Mathematical Scale: 8pt Grid & Strict Typography Hierarchy
+   Rules:
+     1. Display 32-40px, Headings 20-28px, Body 14-16px, Labels 11-13px (12px)
+     2. Size Down, Weight Up (12px interface text -> Semibold 600)
+     3. Mathematical Scale (8pt Grid & Base 16px)
+     4. Token Everything (Mapped to --gds-* tokens)
+     5. Keep Above 10px (Strictly >= 11px)
+   ========================================================= */
+
+/* ── 1. Canvas & Layout ── */
+.app-screen-content.profile-active {
+  background: var(--gds-bg-canvas, #0b0d13);
+}
+
+.profile-page-nav-title {
+  font-family: var(--gds-font-display, inherit);
+  font-size: var(--gds-text-h3, 20px);
+  font-weight: var(--gds-weight-bold, 700);
+  letter-spacing: var(--gds-tracking-heading, -0.015em);
+  color: #ffffff;
+}
+
+.profile-page {
+  position: relative;
+  padding: 16px 16px calc(112px + env(safe-area-inset-bottom, 16px));
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.profile-tab-content {
+  padding: var(--gds-space-1, 8px) 0 0;
+}
+
+/* Toast */
+.profile-toast {
+  position: sticky;
+  top: var(--gds-space-2, 16px);
+  z-index: 60;
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  margin: 0 auto var(--gds-space-2, 16px);
+  padding: var(--gds-space-1, 8px) var(--gds-space-2, 16px);
+  background: var(--gds-bg-surface-glass-elevated, #171a26);
+  backdrop-filter: var(--gds-backdrop-blur);
+  -webkit-backdrop-filter: var(--gds-backdrop-blur);
+  border: 1px solid var(--gds-border-medium);
+  border-radius: var(--gds-radius-pill, 9999px);
+  color: #ffffff;
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-semibold, 600);
+  line-height: var(--gds-leading-label, 1.4);
+  box-shadow: var(--gds-shadow-md);
+}
+
+/* ── 2. User Identity Section (Akari Inspiration Layout) ── */
+.profile-inspo-identity-section {
+  padding: var(--gds-space-1, 8px) var(--gds-space-0-5, 4px);
+  margin-bottom: var(--gds-space-2, 16px);
+}
+
+.profile-inspo-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gds-space-2, 16px);
+}
+
+/* Squircle Avatar: 80px x 80px, 24px radius (8pt scale) */
+.profile-squircle-avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.profile-squircle-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #e4ff55 0%, var(--gds-accent-citron, #d4ff32) 60%, #b8e61e 100%);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45), 0 0 0 1.5px rgba(212, 255, 50, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.profile-initials-text {
+  font-family: var(--gds-font-display);
+  font-size: var(--gds-text-h1, 28px);
+  font-weight: var(--gds-weight-black, 800);
+  color: #0b0d13;
+  letter-spacing: var(--gds-tracking-hero, -0.02em);
+  line-height: 1;
+}
+
+.profile-squircle-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Active Listening Status Dot: 16px x 16px (2 * 8px) */
+.profile-status-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #22c55e;
+  border: 2.5px solid #0b0d13;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.75);
+}
+
+/* User Metadata Beside Avatar */
+.profile-inspo-meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-inspo-handle {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--gds-accent-citron, #d4ff32);
+  margin-bottom: 2px;
+  letter-spacing: 0.02em;
+}
+
+.profile-inspo-name {
+  font-family: var(--gds-font-display);
+  font-size: 22px;
+  font-weight: 750;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: #ffffff;
+  margin: 0 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-inspo-bio {
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.45;
+  color: #cbd5e1;
+  margin: 0 0 4px;
+}
+
+.profile-inspo-subtitle {
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: #64748b;
+  letter-spacing: 0.01em;
+}
+
+/* Edit Profile Row: Height 40px, Radius 16px (8pt grid) */
+.profile-inspo-btn-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 14px;
+}
+
+.profile-inspo-edit-btn {
+  flex: 1;
+  height: 38px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: var(--gds-text-body, 14px);
+  font-weight: var(--gds-weight-semibold, 600);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gds-space-1, 8px);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.profile-inspo-edit-btn:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.profile-inspo-icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.profile-inspo-icon-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+/* Bio Editor Form */
+.profile-bio-editor {
+  margin-top: var(--gds-space-2, 16px);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gds-space-1, 8px);
+}
+
+.profile-bio-input {
+  width: 100%;
+  padding: var(--gds-space-1-5, 12px) var(--gds-space-2, 16px);
+  border-radius: var(--gds-radius-lg, 16px);
+  background: var(--gds-bg-surface-1, #12141c);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: var(--gds-text-body, 14px);
+  line-height: var(--gds-leading-body, 1.6);
+  resize: vertical;
+}
+
+.profile-bio-input:focus {
+  outline: none;
+  border-color: var(--gds-accent-citron, #d4ff32);
+  box-shadow: 0 0 0 3px rgba(212, 255, 50, 0.2);
+}
+
+.profile-bio-btn-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--gds-space-1, 8px);
+}
+
+.profile-bio-cancel-btn,
+.profile-bio-save-btn {
+  height: 36px;
+  padding: 0 var(--gds-space-2, 16px);
+  border-radius: var(--gds-radius-pill, 9999px);
+  font-family: inherit;
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-semibold, 600);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gds-space-0-5, 4px);
+  transition: all 0.15s;
+}
+
+.profile-bio-cancel-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--gds-text-secondary);
+}
+
+.profile-bio-save-btn {
+  background: var(--gds-accent-citron, #d4ff32);
+  border: none;
+  color: #0b0d13;
+  box-shadow: 0 2px 10px var(--gds-accent-citron-glow, rgba(212, 255, 50, 0.4));
+}
+
+/* ── 3. Stats Dashboard Card ── */
+.profile-inspo-stats-card {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  align-items: center;
+  margin: 14px 0 20px;
+  padding: 14px 16px;
+  background: var(--gds-bg-surface-1, #10121a);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+}
+
+.profile-inspo-stat-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.profile-inspo-stat-col:hover .profile-inspo-stat-val {
+  font-family: var(--gds-font-display);
+  font-size: 20px;
+  font-weight: var(--gds-weight-bold, 700);
+  line-height: 1.2;
+  color: #ffffff;
+  letter-spacing: var(--gds-tracking-heading, -0.015em);
+  font-variant-numeric: tabular-nums;
+  transition: color 0.15s;
+}
+
+/* Size Down, Weight Up for Stats Label */
+.profile-inspo-stat-lbl {
+  font-size: 11px;
+  font-weight: var(--gds-weight-semibold, 600);
+  color: var(--gds-text-muted, #64748b);
+  letter-spacing: var(--gds-tracking-label, 0.08em);
+  text-transform: uppercase;
+  margin-top: var(--gds-space-0-5, 4px);
+}
+
+.profile-inspo-stat-divider {
+  width: 1px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ── 4. "YOUR LISTENING DNA" / Taste Profile Card ── */
+.profile-inspo-dna-card {
+  background: var(--gds-bg-surface-1, #10121a);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--gds-radius-xl, 24px);
+  padding: var(--gds-space-3, 24px);
+  margin-bottom: var(--gds-space-3, 24px);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s, box-shadow 0.25s;
+}
+
+.profile-inspo-dna-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(212, 255, 50, 0.32);
+  box-shadow: 0 16px 36px -6px rgba(0, 0, 0, 0.6), 0 0 28px rgba(212, 255, 50, 0.18);
+}
+
+.profile-dna-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--gds-space-1, 8px);
+}
+
+.profile-dna-kicker {
+  display: block;
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-semibold, 600);
+  letter-spacing: var(--gds-tracking-label, 0.08em);
+  text-transform: uppercase;
+  color: var(--gds-accent-citron, #d4ff32);
+  margin-bottom: var(--gds-space-0-5, 4px);
+}
+
+.profile-dna-title {
+  font-family: var(--gds-font-display);
+  font-size: var(--gds-text-h3, 20px);
+  font-weight: var(--gds-weight-bold, 700);
+  line-height: var(--gds-leading-heading, 1.25);
+  letter-spacing: var(--gds-tracking-heading, -0.015em);
+  color: #ffffff;
+  margin: 0;
+}
+
+.profile-dna-arrow-btn {
+  color: var(--gds-accent-citron, #d4ff32);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.profile-inspo-dna-card:hover .profile-dna-arrow-btn {
+  transform: translate(2px, -2px);
+}
+
+/* Orbital Stage: 160px Height (20 * 8px) */
+.profile-dna-orbital-stage {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  margin: var(--gds-space-2, 16px) 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dna-orbit-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Center Planet: 96px x 96px (12 * 8px) */
+.dna-planet-circle {
+  position: relative;
+  z-index: 2;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #e4ff55 0%, var(--gds-accent-citron, #d4ff32) 65%, #a6d80e 100%);
+  box-shadow: 0 0 38px var(--gds-accent-citron-glow, rgba(212, 255, 50, 0.5)), 0 6px 20px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dna-planet-pct {
+  font-family: var(--gds-font-display);
+  font-size: var(--gds-text-h2, 24px);
+  font-weight: var(--gds-weight-bold, 700);
+  color: #0b0d13;
+  line-height: 1;
+  letter-spacing: var(--gds-tracking-hero, -0.02em);
+}
+
+.dna-planet-name {
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-semibold, 600);
+  color: #0b0d13;
+  letter-spacing: var(--gds-tracking-label, 0.08em);
+  text-transform: uppercase;
+  margin-top: var(--gds-space-0-5, 4px);
+}
+
+/* Satellites */
+.dna-satellite-wrap {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: var(--gds-space-1, 8px);
+  pointer-events: none;
+}
+
+.dna-satellite-wrap.pos-top-right {
+  top: 24px;
+  right: 16px;
+  flex-direction: row-reverse;
+}
+
+.dna-satellite-wrap.pos-bottom-left {
+  bottom: 24px;
+  left: 16px;
+}
+
+.dna-satellite-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d4ff32;
+  box-shadow: 0 0 10px rgba(212, 255, 50, 0.95);
+  flex-shrink: 0;
+}
+
+.dna-satellite-chip {
+  padding: var(--gds-space-0-5, 4px) var(--gds-space-1, 8px);
+  border-radius: var(--gds-radius-sm, 8px);
+  background: rgba(18, 20, 30, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gds-space-0-5, 4px);
+  font-size: var(--gds-text-label, 12px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
+}
+
+.dna-satellite-chip .sat-name {
+  color: #94a3b8;
+  font-weight: var(--gds-weight-medium, 500);
+}
+
+.dna-satellite-chip .sat-pct {
+  color: #ffffff;
+  font-weight: var(--gds-weight-bold, 700);
+  font-family: var(--gds-font-display);
+}
+
+/* Bottom Vibe Pills */
+.profile-dna-vibes-row {
+  display: flex;
+  gap: var(--gds-space-1, 8px);
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.profile-dna-vibe-pill {
+  padding: var(--gds-space-1, 8px) var(--gds-space-2, 16px);
+  border-radius: var(--gds-radius-pill, 9999px);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-medium, 500);
+  color: #cbd5e1;
+  transition: all 0.18s;
+}
+
+.profile-inspo-dna-card:hover .profile-dna-vibe-pill {
+  border-color: rgba(212, 255, 50, 0.28);
+  color: #ffffff;
+}
+
+/* ── 5. Segmented Underline Tabs (Ember Accent) ── */
+.profile-inspo-tabs-track {
+  display: flex;
+  align-items: center;
+  gap: var(--gds-space-3, 24px);
+  padding: 0 var(--gds-space-0-5, 4px) var(--gds-space-0-5, 4px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: var(--gds-space-3, 24px);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.profile-inspo-tabs-track::-webkit-scrollbar {
+  display: none;
+}
+
+.profile-inspo-tab-btn {
+  background: transparent;
+  border: none;
+  padding: var(--gds-space-1, 8px) 0 var(--gds-space-2, 16px);
+  color: #94a3b8;
+  font-family: inherit;
+  font-size: var(--gds-text-body, 14px);
+  font-weight: var(--gds-weight-semibold, 600);
+  line-height: var(--gds-leading-label, 1.4);
+  cursor: pointer;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gds-space-0-5, 4px);
+  white-space: nowrap;
+  transition: color 0.18s;
+  flex-shrink: 0;
+}
+
+.profile-inspo-tab-btn:hover {
+  color: #ffffff;
+}
+
+.profile-inspo-tab-btn.is-active {
+  color: #ffffff;
+  font-weight: var(--gds-weight-bold, 700);
+}
+
+.profile-inspo-tab-btn.is-active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--gds-accent-citron, #d4ff32);
+  border-radius: var(--gds-radius-pill, 9999px);
+  box-shadow: 0 0 10px var(--gds-accent-citron-glow, rgba(212, 255, 50, 0.5));
+}
+
+.profile-inspo-tab-count {
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-semibold, 600);
+  color: #64748b;
+  margin-left: 2px;
+}
+
+.profile-inspo-tab-btn.is-active .profile-inspo-tab-count {
+  color: var(--gds-accent-citron, #d4ff32);
+}
+
+/* ── 6. Activity Feed Cards (Reviews Tab) ── */
+.profile-activity-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--gds-space-2, 16px);
+  padding: 0 var(--gds-space-0-5, 4px);
+}
+
+.profile-activity-title {
+  font-family: var(--gds-font-display);
+  font-size: var(--gds-text-h3, 20px);
+  font-weight: var(--gds-weight-bold, 700);
+  line-height: var(--gds-leading-heading, 1.25);
+  letter-spacing: var(--gds-tracking-heading, -0.015em);
+  color: #ffffff;
+  margin: 0;
+}
+
+.profile-activity-filter {
+  display: flex;
+  align-items: center;
+  gap: var(--gds-space-0-5, 4px);
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-semibold, 600);
+  color: var(--gds-accent-citron, #d4ff32);
+  cursor: pointer;
+}
+
+.profile-activity-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gds-space-2, 16px);
+}
+
+.profile-activity-card {
+  background: var(--gds-bg-surface-1, #10121a);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--gds-radius-xl, 24px);
+  padding: var(--gds-space-2, 16px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.activity-card-user-row {
+  display: flex;
+  align-items: center;
+  gap: var(--gds-space-1, 8px);
+  margin-bottom: var(--gds-space-2, 16px);
+}
+
+.activity-user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--gds-radius-lg, 16px);
+  background: linear-gradient(135deg, #e4ff55 0%, var(--gds-accent-citron, #d4ff32) 65%, #b8e61e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-bold, 700);
+  color: #0b0d13;
+  flex-shrink: 0;
+}
+
+.activity-user-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-user-name {
+  font-size: var(--gds-text-body, 14px);
+  font-weight: var(--gds-weight-semibold, 600);
+  line-height: var(--gds-leading-heading, 1.25);
+  color: #ffffff;
+}
+
+.activity-user-action {
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-regular, 400);
+  color: var(--gds-text-muted, #64748b);
+  margin-top: 2px;
+}
+
+.activity-menu-btn {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: var(--gds-space-0-5, 4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--gds-radius-xs, 4px);
+  transition: color 0.15s;
+}
+
+.activity-menu-btn:hover {
+  color: #ef4444;
+}
+
+.activity-album-embed {
+  background: rgba(0, 0, 0, 0.38);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--gds-radius-lg, 16px);
+  padding: var(--gds-space-2, 16px);
+  display: flex;
+  gap: var(--gds-space-2, 16px);
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.activity-album-embed:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(212, 255, 50, 0.28);
+  transform: translateY(-1px);
+}
+
+.activity-album-art {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--gds-radius-md, 12px);
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.activity-album-meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-artist-name {
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-semibold, 600);
+  color: var(--gds-accent-citron, #d4ff32);
+  text-transform: uppercase;
+  letter-spacing: var(--gds-tracking-caption, 0.04em);
+}
+
+.activity-album-title {
+  font-family: var(--gds-font-display);
+  font-size: var(--gds-text-body-lg, 16px);
+  font-weight: var(--gds-weight-bold, 700);
+  color: #ffffff;
+  margin: 0 0 var(--gds-space-0-5, 4px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.activity-rating-row {
+  display: flex;
+  align-items: center;
+  gap: var(--gds-space-1, 8px);
+}
+
+.activity-rating-score {
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-bold, 700);
+  color: var(--gds-accent-citron, #d4ff32);
+}
+
+.activity-review-quote {
+  font-size: var(--gds-text-body, 14px);
+  font-weight: var(--gds-weight-regular, 400);
+  line-height: var(--gds-leading-body, 1.6);
+  color: #cbd5e1;
+  font-style: italic;
+  margin: var(--gds-space-1, 8px) 0 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── 7. Playlists Tab ── */
+.playlists-tab-stage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gds-space-2, 16px);
+}
+
+.section-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: var(--gds-space-2, 16px);
+}
+
+.profile-section-title {
+  font-family: var(--gds-font-display, inherit);
+  font-size: var(--gds-text-h3, 20px);
+  font-weight: var(--gds-weight-bold, 700);
+  letter-spacing: var(--gds-tracking-heading, -0.015em);
+  color: #ffffff;
+  margin: 0;
+}
+
+.profile-section-subtitle {
+  display: block;
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-medium, 500);
+  color: var(--gds-text-muted, #64748b);
+  margin-top: var(--gds-space-0-5, 4px);
+}
+
+.profile-curator-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gds-space-1, 8px);
+  padding: var(--gds-space-1, 8px) var(--gds-space-2, 16px);
+  border-radius: var(--gds-radius-pill, 9999px);
+  background: var(--gds-bg-surface-2, #1b202d);
+  border: 1px solid var(--gds-border-subtle);
+  color: var(--gds-text-primary);
+  font-family: inherit;
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-semibold, 600);
+  cursor: pointer;
+  transition: var(--gds-spring-fast);
+}
+
+.profile-curator-action-btn:hover {
+  background: var(--gds-accent-citron, #d4ff32);
+  color: #0b0d13;
+  border-color: transparent;
+}
+
+.profile-new-playlist-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gds-space-1, 8px);
+  padding: var(--gds-space-2, 16px);
+  background: var(--gds-bg-surface-1, #10121a);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--gds-radius-lg, 16px);
+  margin-bottom: var(--gds-space-1, 8px);
+}
+
+.profile-new-playlist-input {
+  width: 100%;
+  background: #0b0d13;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--gds-radius-sm, 8px);
+  padding: var(--gds-space-1, 8px) var(--gds-space-1-5, 12px);
+  color: #ffffff;
+  font-size: var(--gds-text-body, 14px);
+  outline: none;
+}
+
+.profile-new-playlist-input:focus {
+  border-color: var(--gds-accent-citron, #d4ff32);
+}
+
+.profile-new-playlist-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--gds-space-1, 8px);
+}
+
+.profile-new-playlist-cancel {
+  padding: var(--gds-space-0-5, 4px) var(--gds-space-1-5, 12px);
+  border-radius: var(--gds-radius-pill, 9999px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  color: #a1a1aa;
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-semibold, 600);
+  cursor: pointer;
+}
+
+.profile-new-playlist-submit {
+  padding: var(--gds-space-0-5, 4px) var(--gds-space-2, 16px);
+  border-radius: var(--gds-radius-pill, 9999px);
+  border: none;
+  background: var(--gds-accent-citron, #d4ff32);
+  color: #0b0d13;
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-bold, 700);
+  cursor: pointer;
+}
+
+.profile-new-playlist-submit:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.playlists-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--gds-space-2, 16px);
+}
+
+.playlist-card {
+  background: var(--gds-bg-surface-1, #10121a);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--gds-radius-lg, 16px);
+  padding: var(--gds-space-1-5, 12px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gds-space-1, 8px);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  text-align: left;
+}
+
+.playlist-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(212, 255, 50, 0.32);
+  transform: translateY(-2px);
+}
+
+.playlist-card-art {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: var(--gds-radius-md, 12px);
+  overflow: hidden;
+  background: #18181b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.playlist-card-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.playlist-card-art-fallback {
+  color: #71717a;
+}
+
+.playlist-card-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.playlist-card-title {
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-bold, 700);
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playlist-card-tracks {
+  font-size: var(--gds-text-caption, 11px);
+  font-weight: var(--gds-weight-medium, 500);
+  color: #71717a;
+  margin-top: 2px;
+}
+
+/* ── 8. Liked & Taste Tab ── */
+.taste-tab-stage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gds-space-3, 24px);
+}
+
+.profile-top-four-section {
+  margin-bottom: var(--gds-space-3, 24px);
+}
+
+.top-four-vinyl-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--gds-space-1-5, 12px);
+}
+
+.top-four-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gds-space-1, 8px);
+}
+
+.vinyl-sleeve-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: var(--gds-radius-md, 12px);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.vinyl-sleeve-wrap:hover {
+  transform: translateY(-3px);
+}
+
+.vinyl-peeking-disc {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  right: -4px;
+  width: 68%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #202020 0%, #111111 60%, #050505 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 1;
+  transition: transform 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vinyl-groove-rings {
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.05);
+}
+
+.vinyl-center-label {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #000000;
+}
+
+.vinyl-sleeve-wrap:hover .vinyl-peeking-disc {
+  transform: translateX(12px) rotate(20deg);
+}
+
+.vinyl-sleeve-art {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--gds-radius-md, 12px);
+  object-fit: cover;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+}
+
+.vinyl-empty-slot {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--gds-radius-md, 12px);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #71717a;
+  transition: all 0.18s;
+}
+
+.vinyl-empty-slot:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--gds-accent-citron, #d4ff32);
+  color: #ffffff;
+}
+
+.top-four-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.top-four-title {
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-bold, 700);
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.top-four-artist {
+  font-size: var(--gds-text-caption, 11px);
+  font-weight: var(--gds-weight-regular, 400);
+  color: #94a3b8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Favorite Albums Shelf */
+.favorite-albums-section {
+  margin-top: var(--gds-space-3, 24px);
+  margin-bottom: var(--gds-space-3, 24px);
+}
+
+.favorite-albums-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gds-space-1-5, 12px);
+  margin-top: var(--gds-space-1-5, 12px);
+}
+
+.favorite-album-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gds-space-0-5, 4px);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+  text-align: left;
+}
+
+.favorite-album-card img {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: var(--gds-radius-md, 12px);
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.15s ease;
+}
+
+.favorite-album-card:hover img {
+  transform: scale(1.03);
+}
+
+.favorite-album-name {
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-semibold, 600);
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.favorite-album-artist {
+  font-size: var(--gds-text-caption, 11px);
+  font-weight: var(--gds-weight-regular, 400);
+  color: #94a3b8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-empty-card-mini {
+  padding: var(--gds-space-3, 24px) var(--gds-space-2, 16px);
+  border-radius: var(--gds-radius-lg, 16px);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gds-space-0-5, 4px);
+  margin-top: var(--gds-space-1-5, 12px);
+}
+
+.empty-mini-icon {
+  color: #71717a;
+  margin-bottom: var(--gds-space-0-5, 4px);
+}
+
+.profile-empty-card-mini p {
+  margin: 0;
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-semibold, 600);
+  color: #e4e4e7;
+}
+
+.profile-empty-card-mini small {
+  font-size: var(--gds-text-caption, 11px);
+  color: #71717a;
+  max-width: 240px;
+}
+
+/* ── 9. Empty Canvas ── */
+.profile-empty-canvas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gds-space-1, 8px);
+  padding: var(--gds-space-6, 48px) var(--gds-space-3, 24px);
+  text-align: center;
+}
+
+.empty-disc-icon {
+  color: var(--gds-text-dim);
+  opacity: 0.6;
+  margin-bottom: var(--gds-space-1, 8px);
+}
+
+.profile-empty-canvas h3 {
+  font-family: var(--gds-font-display);
+  font-size: var(--gds-text-body-lg, 16px);
+  font-weight: var(--gds-weight-bold, 700);
+  letter-spacing: var(--gds-tracking-heading, -0.015em);
+  color: var(--gds-text-secondary);
+  margin: 0;
+}
+
+.profile-empty-canvas p {
+  font-size: var(--gds-text-body, 14px);
+  font-weight: var(--gds-weight-regular, 400);
+  color: var(--gds-text-muted);
+  max-width: 320px;
+  line-height: var(--gds-leading-body, 1.6);
+  margin: 0;
+}
+
+/* ── 10. Scrobbles Stream ── */
+.scrobbles-tab-stage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gds-space-2, 16px);
+}
+
+.scrobbles-stream-card {
+  background: var(--gds-bg-surface-1, #10121a);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--gds-radius-xl, 24px);
+  overflow: hidden;
+}
+
+.scrobbles-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.scrobble-row {
+  display: flex;
+  align-items: center;
+  gap: var(--gds-space-2, 16px);
+  padding: var(--gds-space-2, 16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.scrobble-row:last-child {
+  border-bottom: none;
+}
+
+.scrobble-art {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--gds-radius-sm, 8px);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.scrobble-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.scrobble-title {
+  font-size: var(--gds-text-body, 14px);
+  font-weight: var(--gds-weight-bold, 700);
+  color: #ffffff;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.scrobble-artist-album {
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-regular, 400);
+  color: #94a3b8;
+  margin: 2px 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.scrobble-meta-row {
+  display: flex;
+  align-items: center;
+  gap: var(--gds-space-1, 8px);
+  margin-top: var(--gds-space-0-5, 4px);
+}
+
+.scrobble-source-badge {
+  font-size: var(--gds-text-caption, 11px);
+  font-weight: var(--gds-weight-semibold, 600);
+  padding: 2px var(--gds-space-1, 8px);
+  border-radius: var(--gds-radius-pill, 9999px);
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+}
+
+.scrobble-source-badge.source-spotify {
+  background: rgba(30, 215, 96, 0.15);
+  color: #1ed760;
+}
+
+.scrobble-source-badge.source-lastfm {
+  background: rgba(186, 0, 0, 0.15);
+  color: #ff6b6b;
+}
+
+.scrobble-time {
+  font-size: var(--gds-text-caption, 11px);
+  color: #64748b;
+}
+
+.scrobble-row-actions {
+  flex-shrink: 0;
+}
+
+.scrobble-reviewed-tag {
+  font-size: var(--gds-text-caption, 11px);
+  font-weight: var(--gds-weight-semibold, 600);
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.12);
+  padding: var(--gds-space-0-5, 4px) var(--gds-space-1, 8px);
+  border-radius: var(--gds-radius-pill, 9999px);
+}
+
+.scrobble-rate-btn {
+  padding: var(--gds-space-0-5, 4px) var(--gds-space-1-5, 12px);
+  border-radius: var(--gds-radius-pill, 9999px);
+  background: var(--gds-bg-surface-2, #1b202d);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-semibold, 600);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.scrobble-rate-btn:hover {
+  background: var(--gds-accent-citron, #d4ff32);
+  color: #0b0d13;
+  border-color: transparent;
+}
+
+/* ── 11. Modal Overlays in Profile ── */
+.profile-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--gds-space-2, 16px);
+}
+
+.profile-modal-card {
+  width: 100%;
+  max-width: 480px;
+  background: var(--gds-bg-surface-1, #10121a);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--gds-radius-xl, 24px);
+  padding: var(--gds-space-3, 24px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.8);
+}
+
+.profile-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--gds-space-2, 16px);
+}
+
+.profile-modal-title {
+  font-family: var(--gds-font-display);
+  font-size: var(--gds-text-h3, 20px);
+  font-weight: var(--gds-weight-bold, 700);
+  color: #ffffff;
+  margin: 0;
+}
+
+.profile-modal-close {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: var(--gds-space-0-5, 4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-modal-close:hover {
+  color: #ffffff;
+}
+
+/* ── 12. Responsive Breakpoint Refinements ── */
+@media (max-width: 420px) {
+  .profile-page {
+    padding: var(--gds-space-1-5, 12px) var(--gds-space-1-5, 12px) var(--gds-space-16, 128px);
+  }
+
+  .profile-squircle-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--gds-radius-lg, 16px);
+  }
+
+  .profile-initials-text {
+    font-size: var(--gds-text-h2, 24px);
+  }
+
+  .profile-status-dot {
+    width: 14px;
+    height: 14px;
+  }
+
+  .profile-inspo-name {
+    font-size: var(--gds-text-h3, 20px);
+  }
+
+  .profile-inspo-stats-card {
+    padding: var(--gds-space-1-5, 12px) var(--gds-space-0-5, 4px);
+  }
+
+  .profile-inspo-stat-val {
+    font-size: var(--gds-text-h3, 20px);
+  }
+
+  .profile-inspo-dna-card {
+    padding: var(--gds-space-2, 16px);
+  }
+
+  .dna-planet-circle {
+    width: 80px;
+    height: 80px;
+  }
+
+  .dna-planet-pct {
+    font-size: var(--gds-text-h3, 20px);
+  }
+
+  .top-four-vinyl-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

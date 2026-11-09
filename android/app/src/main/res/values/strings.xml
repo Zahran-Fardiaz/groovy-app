@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Groovy</string>
+    <string name="title_activity_main">Groovy</string>
+    <string name="package_name">com.groovy.app</string>
+    <string name="custom_url_scheme">com.groovy.app</string>
+</resources>

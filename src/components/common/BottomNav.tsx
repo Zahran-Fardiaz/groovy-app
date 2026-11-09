@@ -44,6 +44,24 @@ const FriendlySearchIcon: React.FC<{ active: boolean; size?: number }> = ({ acti
   );
 };
 
+// 3. Friendly Community Icon: rounded friendly speech bubble with smile
+const FriendlyCommunityIcon: React.FC<{ active: boolean; size?: number }> = ({ active, size = 21 }) => {
+  if (active) {
+    return (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="#000000" style={{ flexShrink: 0 }}>
+        <path d="M 12 3.8 C 6.8 3.8 3 7.6 3 12.2 C 3 14.6 4.1 16.7 5.8 18.2 L 5.2 20.8 C 5 21.4 5.6 21.9 6.2 21.6 L 9.4 20.2 C 10.2 20.5 11.1 20.6 12 20.6 C 17.2 20.6 21 16.8 21 12.2 C 21 7.6 17.2 3.8 12 3.8 Z" />
+        <path d="M 8.8 12.2 Q 12 15 15.2 12.2" stroke="#D4FF32" strokeWidth="2.2" strokeLinecap="round" fill="none" />
+      </svg>
+    );
+  }
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+      <path d="M 12 3.8 C 6.8 3.8 3 7.6 3 12.2 C 3 14.6 4.1 16.7 5.8 18.2 L 5.2 20.8 C 5 21.4 5.6 21.9 6.2 21.6 L 9.4 20.2 C 10.2 20.5 11.1 20.6 12 20.6 C 17.2 20.6 21 16.8 21 12.2 C 21 7.6 17.2 3.8 12 3.8 Z" />
+      <path d="M 8.8 12.2 Q 12 15 15.2 12.2" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" />
+    </svg>
+  );
+};
+
 // 3. Plus Icon (⊕ circle with plus)
 const CirclePlusIcon: React.FC<{ size?: number }> = ({ size = 22 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
@@ -79,11 +97,12 @@ export const BottomNav: React.FC<BottomNavProps> = ({
   const navRef = useRef<HTMLElement>(null);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  // Navigation indices: 0: Home, 1: Search, 2: Quick Log, 3: For You, 4: Profile
+  // Navigation indices: 0: Home, 1: Community, 2: Quick Log, 3: Search, 4: Profile
   const getActiveIndex = useCallback(() => {
     switch (currentTab) {
       case 'feed': return 0;
-      case 'search': return 1;
+      case 'community': return 1;
+      case 'search': return 3;
       case 'recommendations': return 3;
       case 'profile': return 4;
       default: return 0;
@@ -282,7 +301,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
 
       {/* Layer 3: Navigation buttons above SVG with aligned icon centers */}
       <div className="notch-dock-items">
-        {/* 1. Feed / Home */}
+        {/* 1. Feed / Home (Slot 0) */}
         <button
           ref={(el) => { buttonRefs.current[0] = el; }}
           id="nav-tab-feed"
@@ -296,21 +315,21 @@ export const BottomNav: React.FC<BottomNavProps> = ({
           {currentTab === 'feed' && <span className="nav-capsule-text">Home</span>}
         </button>
 
-        {/* 2. Explore / Search */}
+        {/* 2. Community (Slot 1 - Left of Plus) */}
         <button
           ref={(el) => { buttonRefs.current[1] = el; }}
-          id="nav-tab-search"
-          className={`nav-item-btn ${currentTab === 'search' ? 'active-pill' : ''}`}
-          onClick={() => onTabChange('search')}
-          title="Search"
-          aria-label="Search"
-          aria-current={currentTab === 'search' ? 'page' : undefined}
+          id="nav-tab-community"
+          className={`nav-item-btn ${currentTab === 'community' ? 'active-pill' : ''}`}
+          onClick={() => onTabChange('community')}
+          title="Community"
+          aria-label="Community"
+          aria-current={currentTab === 'community' ? 'page' : undefined}
         >
-          <FriendlySearchIcon active={currentTab === 'search'} size={20} />
-          {currentTab === 'search' && <span className="nav-capsule-text">Search</span>}
+          <FriendlyCommunityIcon active={currentTab === 'community'} size={21} />
+          {currentTab === 'community' && <span className="nav-capsule-text">Community</span>}
         </button>
 
-        {/* 3. Center Quick Log Button (⊕ CirclePlus) */}
+        {/* 3. Center Quick Log Button (⊕ CirclePlus - Slot 2) */}
         <button
           ref={(el) => { buttonRefs.current[2] = el; }}
           id="nav-action-quick-log"
@@ -322,21 +341,21 @@ export const BottomNav: React.FC<BottomNavProps> = ({
           <CirclePlusIcon size={22} />
         </button>
 
-        {/* 4. Recommendations / For You */}
+        {/* 4. Search (Slot 3 - Right of Plus) */}
         <button
           ref={(el) => { buttonRefs.current[3] = el; }}
-          id="nav-tab-recommendations"
-          className={`nav-item-btn ${currentTab === 'recommendations' ? 'active-pill' : ''}`}
-          onClick={() => onTabChange('recommendations')}
-          title="For You"
-          aria-label="For You"
-          aria-current={currentTab === 'recommendations' ? 'page' : undefined}
+          id="nav-tab-search"
+          className={`nav-item-btn ${currentTab === 'search' || currentTab === 'recommendations' ? 'active-pill' : ''}`}
+          onClick={() => onTabChange('search')}
+          title="Search"
+          aria-label="Search"
+          aria-current={currentTab === 'search' || currentTab === 'recommendations' ? 'page' : undefined}
         >
-          <BooksLibraryIcon size={21} />
-          {currentTab === 'recommendations' && <span className="nav-capsule-text">For You</span>}
+          <FriendlySearchIcon active={currentTab === 'search' || currentTab === 'recommendations'} size={20} />
+          {(currentTab === 'search' || currentTab === 'recommendations') && <span className="nav-capsule-text">Search</span>}
         </button>
 
-        {/* 5. Profile */}
+        {/* 5. Profile (Slot 4) */}
         <button
           ref={(el) => { buttonRefs.current[4] = el; }}
           id="nav-tab-profile"

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { musicApi } from '../services/musicApi';
-import { storageService } from '../services/storageService';
+import { storageService, PEELING_TANGERINE_EP } from '../services/storageService';
 import { Album } from '../types/music';
 
 // Feed Subcomponents
@@ -8,7 +8,7 @@ import { CategoryCapsuleBar } from '../components/feed/CategoryCapsuleBar';
 import { RecentAlbumsShelf } from '../components/feed/RecentAlbumsShelf';
 import { NewCollectionBanner } from '../components/feed/NewCollectionBanner';
 import { PlaylistShelf } from '../components/feed/PlaylistShelf';
-import { GroovyOfTheYearBanner } from '../components/feed/GroovyOfTheYearBanner';
+import { EpOfTheMonthBanner } from '../components/feed/EpOfTheMonthBanner';
 
 interface FeedViewProps {
   onOpenAlbum: (albumId: string) => void;
@@ -16,87 +16,12 @@ interface FeedViewProps {
   onOpenScrobbleModal?: () => void;
 }
 
-// Peeling Tangerine – Welcome Home EP (hardcoded, Apple Music ID 6786807440)
-const PEELING_TANGERINE_EP: Album = {
-  id: 'peeling-tangerine-welcome-home-ep',
-  title: 'Welcome Home - EP',
-  artist: 'Peeling Tangerine',
-  coverUrl: 'https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/b5/ed/de/b5edde3b-9511-fa05-6410-ed97a180ee84/5064010768980_cover.jpg/600x600bb.jpg',
-  releaseYear: 2026,
-  releaseDate: '2026-05-16T07:00:00Z',
-  albumType: 'ep',
-  isIndonesian: true,
-  origin: 'Indonesia',
-  trackCount: 5,
-  genres: ['Alternative', 'Rock', 'Pop'],
-  averageRating: 5,
-  totalRatings: 100000,
-  totalReviews: 100000,
-  tracklist: [
-    {
-      id: 'pt-tr-1',
-      title: 'Now You\'re Alright',
-      artist: 'Peeling Tangerine',
-      albumTitle: 'Welcome Home - EP',
-      albumId: 'peeling-tangerine-welcome-home-ep',
-      durationMs: 140251,
-      trackNumber: 1,
-      previewUrl: 'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/6a/73/79/6a7379ba-506c-24df-0461-118a99c73fe5/mzaf_6478667350279855629.plus.aac.p.m4a',
-      isIndonesian: true
-    },
-    {
-      id: 'pt-tr-2',
-      title: 'Welcome Home',
-      artist: 'Peeling Tangerine',
-      albumTitle: 'Welcome Home - EP',
-      albumId: 'peeling-tangerine-welcome-home-ep',
-      durationMs: 292500,
-      trackNumber: 2,
-      previewUrl: 'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/9e/9d/43/9e9d4361-6bf8-ebd7-d813-03b60b047fdb/mzaf_10399222544289710533.plus.aac.p.m4a',
-      isIndonesian: true
-    },
-    {
-      id: 'pt-tr-3',
-      title: 'All-Nighter',
-      artist: 'Peeling Tangerine',
-      albumTitle: 'Welcome Home - EP',
-      albumId: 'peeling-tangerine-welcome-home-ep',
-      durationMs: 255656,
-      trackNumber: 3,
-      previewUrl: 'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/b9/e6/44/b9e64467-d2d7-582d-43fb-412982190710/mzaf_10459915893269685902.plus.aac.p.m4a',
-      isIndonesian: true
-    },
-    {
-      id: 'pt-tr-4',
-      title: "Goodman's Ballad",
-      artist: 'Peeling Tangerine',
-      albumTitle: 'Welcome Home - EP',
-      albumId: 'peeling-tangerine-welcome-home-ep',
-      durationMs: 214968,
-      trackNumber: 4,
-      previewUrl: 'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/31/4c/8e/314c8e03-8270-3d75-d216-6cf078429d77/mzaf_1307077043893761622.plus.aac.p.m4a',
-      isIndonesian: true
-    },
-    {
-      id: 'pt-tr-5',
-      title: 'Hey, Child',
-      artist: 'Peeling Tangerine',
-      albumTitle: 'Welcome Home - EP',
-      albumId: 'peeling-tangerine-welcome-home-ep',
-      durationMs: 231000,
-      trackNumber: 5,
-      previewUrl: 'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/00/b2/87/00b28717-611d-f5eb-facc-289d6ccd2ef2/mzaf_4915679810718352102.plus.aac.p.m4a',
-      isIndonesian: true
-    }
-  ]
-};
-
 // Guaranteed fallback spotlight album
 const FALLBACK_SPOTLIGHT: Album = {
   id: 'bernadya-sialnya',
   title: 'Sialnya, Hidup Harus Tetap Berjalan',
   artist: 'Bernadya',
-  coverUrl: 'https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/05/9a/59/059a5971-da5f-5182-e565-d41c9bfae348/cover.jpg/600x600bb.jpg',
+  coverUrl: 'https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/9c/9f/80/9c9f80d1-cb53-db64-9bca-03f06cd1000c/24UMGIM57224.rgb.jpg/600x600bb.jpg',
   releaseYear: 2024,
   releaseDate: '2024-06-23T00:00:00Z',
   isIndonesian: true,
@@ -208,6 +133,18 @@ export const FeedView: React.FC<FeedViewProps> = ({
         a.genres?.some(g => indieKeywords.some(kw => g.toLowerCase().includes(kw)))
       );
       if (matched.length > 0) list = matched;
+    } else if (selectedCategory === 'rock') {
+      const rockKeywords = ['rock', 'hard rock', 'punk', 'metal', 'grunge', 'alternative rock'];
+      const matched = list.filter(a =>
+        a.genres?.some(g => rockKeywords.some(kw => g.toLowerCase().includes(kw)))
+      );
+      if (matched.length > 0) list = matched;
+    } else if (selectedCategory === 'pop') {
+      const popKeywords = ['pop', 'dance-pop', 'electropop', 'synth-pop'];
+      const matched = list.filter(a =>
+        a.genres?.some(g => popKeywords.some(kw => g.toLowerCase().includes(kw)))
+      );
+      if (matched.length > 0) list = matched;
     } else if (selectedCategory === 'vinyl') {
       const classic = list.filter(a => a.releaseYear <= 2024 || a.genres?.some(g => g.toLowerCase().includes('rock') || g.toLowerCase().includes('pop')));
       if (classic.length > 0) list = classic;
@@ -229,32 +166,36 @@ export const FeedView: React.FC<FeedViewProps> = ({
 
   return (
     <div style={{ paddingBottom: '32px' }}>
-      {/* 1. Select Categories Capsule Bar */}
+            {/* 1. EP of the Month (Featured Showcase) */}
+      <EpOfTheMonthBanner
+        album={PEELING_TANGERINE_EP}
+        onOpenAlbum={onOpenAlbum}
+        score="10.0"
+      />
+
+      {/* 2. Select Categories Capsule Bar */}
       <CategoryCapsuleBar
         selectedCategory={selectedCategory}
         onSelectCategory={setSelectedCategory}
       />
 
-      {/* 2. Groovy of the Year Banner */}
-      <GroovyOfTheYearBanner
-        album={PEELING_TANGERINE_EP}
-        onOpenAlbum={onOpenAlbum}
-      />
-
-      {/* 3. Recent Albums (Chronologically sorted: leftmost is truly the most recent release) */}
+      {/* 3. Recent Releases (Chronologically sorted: leftmost is truly the most recent release) */}
       <RecentAlbumsShelf
         albums={recentAlbums}
         onOpenAlbum={onOpenAlbum}
         onOpenQuickLog={onOpenQuickLog}
+        onSeeAll={() => {
+          if (recentAlbums.length > 0) onOpenAlbum(recentAlbums[0].id);
+        }}
       />
 
-      {/* 3. New Collection Curator Showcase Canvas */}
+{/* 4. New Collection Curator Showcase Canvas */}
       <NewCollectionBanner
         spotlightAlbum={spotlightAlbum}
         onOpenAlbum={onOpenAlbum}
       />
 
-      {/* 4. Playlists Shelf - Page ends here */}
+      {/* 5. Playlists Shelf - Page ends here */}
       <PlaylistShelf
         albums={recentReleases}
         onOpenAlbum={onOpenAlbum}

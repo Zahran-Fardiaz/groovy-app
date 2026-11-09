@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="440" viewBox="0 0 1600 440">
+  <rect width="1600" height="440" fill="white"/>
+  <rect x="28" y="24" width="1544" height="392" fill="white" stroke="black" stroke-width="2.5"/>
+  <g fill="black" font-family="Georgia, 'Times New Roman', serif" font-size="32" font-weight="700" text-anchor="middle">
+    <text x="800" y="170">Access Groovy → Discover music through Home and Search</text>
+    <text x="800" y="218">View album details → Log listening → Rate album and tracks → Write review</text>
+    <text x="800" y="266">Revisit journal in Profile → Explore community reviews and For You recommendations</text>
+  </g>
+</svg>

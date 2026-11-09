@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Smartphone, Monitor, Disc, Wifi, Battery } from 'lucide-react';
-import { useMusicPlayer } from '../../context/MusicPlayerContext';
+import { Capacitor } from '@capacitor/core';
 
 interface MobileFrameProps {
   children: React.ReactNode;
@@ -9,9 +9,30 @@ interface MobileFrameProps {
 export type DeviceMode = 'iphone' | 'pixel' | 'fullscreen';
 
 export const MobileFrame: React.FC<MobileFrameProps> = ({ children }) => {
+  const isNative = Capacitor.isNativePlatform();
+  const [isMobileDevice, setIsMobileDevice] = useState(() => {
+    if (typeof window === 'undefined') return true;
+    return (
+      isNative ||
+      window.innerWidth <= 768 ||
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    );
+  });
+
   const [deviceMode, setDeviceMode] = useState<DeviceMode>('iphone');
   const [currentTimeStr, setCurrentTimeStr] = useState('9:41');
-  const { currentTrack, isPlaying, togglePlayPause } = useMusicPlayer();
+  
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileDevice(
+        isNative ||
+        window.innerWidth <= 768 ||
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+      );
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isNative]);
 
   useEffect(() => {
     const updateTime = () => {
@@ -25,6 +46,13 @@ export const MobileFrame: React.FC<MobileFrameProps> = ({ children }) => {
     return () => clearInterval(interval);
   }, []);
 
+  // When running on real Android APK or mobile browser, render 100% native fullscreen layout!
+  // No fake device switcher bar, no fake phone bezel, and no fake status bar!
+  if (isNative || isMobileDevice) {
+    return <div className="native-mobile-container">{children}</div>;
+  }
+
+  // Desktop browser mode: provides device frame preview for testing
   return (
     <div className="desktop-preview-container">
       {/* Device Switcher Top Bar for testing responsive mobile dimensions */}
@@ -61,37 +89,9 @@ export const MobileFrame: React.FC<MobileFrameProps> = ({ children }) => {
         <div className="phone-status-bar">
           <span style={{ letterSpacing: '-0.02em' }}>{currentTimeStr}</span>
 
-          {/* Apple Dynamic Island (Interactive & Expands when audio is playing) */}
-          <div
-            className={`dynamic-island ${isPlaying && currentTrack ? 'playing' : ''}`}
-            onClick={() => currentTrack && togglePlayPause()}
-            title={currentTrack ? `${isPlaying ? 'Pause' : 'Play'}: ${currentTrack.title}` : 'Dynamic Island'}
-          >
-            {isPlaying && currentTrack ? (
-              <>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <img
-                    src={currentTrack.albumTitle ? 'https://upload.wikimedia.org/wikipedia/en/2/2e/In_Rainbows_Official_Cover.jpg' : ''}
-                    alt=""
-                    style={{ width: '16px', height: '16px', borderRadius: 0 }}
-                    onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
-                  />
-                  <span style={{ fontSize: '10px', color: '#cbd5e1', maxWidth: '80px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {currentTrack.title}
-                  </span>
-                </div>
-                <div className="dynamic-island-waveform">
-                  <div className="waveform-bar" />
-                  <div className="waveform-bar" />
-                  <div className="waveform-bar" />
-                  <div className="waveform-bar" />
-                </div>
-              </>
-            ) : (
-              <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div style={{ width: '10px', height: '10px', borderRadius: 0, background: '#1c1c24' }} />
-              </div>
-            )}
+          {/* Apple Dynamic Island Notch */}
+          <div className="dynamic-island">
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#1c1c24' }} />
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>

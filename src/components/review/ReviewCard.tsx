@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart, MessageSquare, Share2, Disc, Send, RotateCw } from 'lucide-react';
+import { Heart, MessageSquare, Share2, Disc, Send, RotateCw, Trash2 } from 'lucide-react';
 import { Review } from '../../types/music';
 import { StarRating } from '../common/StarRating';
 import { storageService } from '../../services/storageService';
@@ -9,12 +9,14 @@ interface ReviewCardProps {
   review: Review;
   onOpenAlbum: (albumId: string) => void;
   onLikeToggle?: () => void;
+  onDelete?: (reviewId: string) => void;
 }
 
 export const ReviewCard: React.FC<ReviewCardProps> = ({
   review,
   onOpenAlbum,
-  onLikeToggle
+  onLikeToggle,
+  onDelete
 }) => {
   const { currentUser } = useAuth();
   const [isLiked, setIsLiked] = useState(review.likedByMe);
@@ -52,13 +54,41 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
             <div className="user-handle-text">@{review.userHandle}</div>
           </div>
         </div>
-        <div className="review-date-badge">
+        <div className="review-date-badge" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          {review.isDemo && <span style={{ marginRight: '2px', color: 'var(--text-muted)', fontSize: '9px' }}>Demo</span>}
           {review.isRelisten && (
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px', color: 'var(--text-muted)', marginRight: '4px' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px', color: 'var(--text-muted)', marginRight: '2px' }}>
               <RotateCw size={10} /> Re-listen
             </span>
           )}
-          {review.createdAt}
+          <span>{review.createdAt}</span>
+          {onDelete && review.userId === currentUser.id && (
+            <button
+              type="button"
+              className="review-owner-del-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete(review.id);
+              }}
+              title="Hapus review"
+              aria-label="Hapus review"
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#71717a',
+                cursor: 'pointer',
+                padding: '2px 4px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                borderRadius: '4px',
+                transition: 'color 0.15s'
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#ef4444')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#71717a')}
+            >
+              <Trash2 size={12} />
+            </button>
+          )}
         </div>
       </div>
 
@@ -68,7 +98,20 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
           className="album-thumb-wrap"
           onClick={() => onOpenAlbum(review.albumId)}
         >
-          <img src={review.albumCover} alt={review.albumTitle} className="album-thumb-img" />
+          <img
+            src={review.albumCover || storageService.getAlbumById(review.albumId)?.coverUrl || ''}
+            alt={review.albumTitle}
+            className="album-thumb-img"
+            loading="lazy"
+            onError={(e) => {
+              const album = storageService.getAlbumById(review.albumId);
+              if (album && album.coverUrl && e.currentTarget.src !== album.coverUrl) {
+                e.currentTarget.src = album.coverUrl;
+              } else {
+                e.currentTarget.src = 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop&q=80';
+              }
+            }}
+          />
         </div>
 
         <div className="review-main-content">

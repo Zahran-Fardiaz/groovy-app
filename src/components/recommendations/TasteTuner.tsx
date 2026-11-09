@@ -1,5 +1,4 @@
 import React from 'react';
-import { Sliders, RotateCcw } from 'lucide-react';
 import { TasteTunerSettings } from '../../types/music';
 
 interface TasteTunerProps {
@@ -15,106 +14,103 @@ export const TasteTuner: React.FC<TasteTunerProps> = ({ settings, onChange }) =>
     });
   };
 
+  const getSliderTrackBg = (val: number) =>
+    `linear-gradient(to right, var(--gds-accent-citron, #d4ff32) 0%, var(--gds-accent-citron, #d4ff32) ${val}%, rgba(255, 255, 255, 0.14) ${val}%, rgba(255, 255, 255, 0.14) 100%)`;
+
   return (
-    <div style={{
-      background: 'var(--bg-surface)',
-      border: '1px solid var(--border-subtle)',
-      borderRadius: 0,
-      padding: '16px',
-      margin: '14px 0',
-      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)'
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Sliders size={14} color="var(--text-secondary)" />
-          <h4 style={{ fontSize: '13px', fontWeight: 600, color: '#ffffff', letterSpacing: '-0.01em' }}>
-            Sonic Preferences
-          </h4>
+    <div className="taste-tuner-card">
+      <div className="taste-tuner-header">
+        <div>
+          <h4 className="taste-tuner-title">Sonic Preferences</h4>
+          <p className="taste-tuner-subtitle">
+            Sesuaikan parameter audio untuk memodulasi kurva rekomendasi musikmu.
+          </p>
         </div>
         <button
+          type="button"
           onClick={() => onChange({ obscurity: 40, energy: 60, acousticness: 45, mood: 50 })}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: 'var(--text-muted)',
-            fontSize: '11px',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px',
-            transition: 'color var(--transition-fast)'
-          }}
-          title="Reset to defaults"
+          className="taste-tuner-reset-btn"
+          title="Reset parameter ke default"
         >
-          <RotateCcw size={11} /> Reset
+          Reset
         </button>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+      <div className="tuner-sliders-grid">
         {/* 1. Obscurity Slider */}
-        <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', marginBottom: '4px', color: 'var(--text-secondary)' }}>
-            <span>Mainstream</span>
-            <span style={{ color: '#ffffff', fontWeight: 500 }}>{settings.obscurity}% Underground</span>
+        <div className="tuner-slider-item">
+          <div className="tuner-slider-meta">
+            <span className="tuner-label-left">Mainstream</span>
+            <span className="tuner-label-val">{settings.obscurity}% Underground</span>
           </div>
           <input
             type="range"
+            aria-label="Underground preference"
             min="0"
             max="100"
             value={settings.obscurity}
-            onChange={e => handleSlider('obscurity', Number(e.target.value))}
-            style={{ width: '100%' }}
+            style={{ background: getSliderTrackBg(settings.obscurity) }}
+            onChange={(e) => handleSlider('obscurity', Number(e.target.value))}
+            className="tuner-range-input"
           />
         </div>
 
         {/* 2. Energy Slider */}
-        <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', marginBottom: '4px', color: 'var(--text-secondary)' }}>
-            <span>Ambient / Chill</span>
-            <span style={{ color: '#ffffff', fontWeight: 500 }}>{settings.energy}% High Energy</span>
+        <div className="tuner-slider-item">
+          <div className="tuner-slider-meta">
+            <span className="tuner-label-left">Ambient / Chill</span>
+            <span className="tuner-label-val">{settings.energy}% High Energy</span>
           </div>
           <input
             type="range"
+            aria-label="Energy preference"
             min="0"
             max="100"
             value={settings.energy}
-            onChange={e => handleSlider('energy', Number(e.target.value))}
-            style={{ width: '100%' }}
+            style={{ background: getSliderTrackBg(settings.energy) }}
+            onChange={(e) => handleSlider('energy', Number(e.target.value))}
+            className="tuner-range-input"
           />
         </div>
 
         {/* 3. Acousticness */}
-        <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', marginBottom: '4px', color: 'var(--text-secondary)' }}>
-            <span>Synthetic / Electronic</span>
-            <span style={{ color: '#ffffff', fontWeight: 500 }}>{settings.acousticness}% Organic</span>
+        <div className="tuner-slider-item">
+          <div className="tuner-slider-meta">
+            <span className="tuner-label-left">Synthetic / Electronic</span>
+            <span className="tuner-label-val">{settings.acousticness}% Organic</span>
           </div>
           <input
             type="range"
+            aria-label="Acoustic preference"
             min="0"
             max="100"
             value={settings.acousticness}
-            onChange={e => handleSlider('acousticness', Number(e.target.value))}
-            style={{ width: '100%' }}
+            style={{ background: getSliderTrackBg(settings.acousticness) }}
+            onChange={(e) => handleSlider('acousticness', Number(e.target.value))}
+            className="tuner-range-input"
           />
         </div>
 
         {/* 4. Mood */}
-        <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', marginBottom: '4px', color: 'var(--text-secondary)' }}>
-            <span>Melancholic</span>
-            <span style={{ color: '#ffffff', fontWeight: 500 }}>{settings.mood}% Euphoric</span>
+        <div className="tuner-slider-item">
+          <div className="tuner-slider-meta">
+            <span className="tuner-label-left">Melancholic</span>
+            <span className="tuner-label-val">{settings.mood}% Euphoric</span>
           </div>
           <input
             type="range"
+            aria-label="Mood preference"
             min="0"
             max="100"
             value={settings.mood}
-            onChange={e => handleSlider('mood', Number(e.target.value))}
-            style={{ width: '100%' }}
+            style={{ background: getSliderTrackBg(settings.mood) }}
+            onChange={(e) => handleSlider('mood', Number(e.target.value))}
+            className="tuner-range-input"
           />
         </div>
       </div>
     </div>
   );
 };
+
+export default TasteTuner;

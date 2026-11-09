@@ -80,15 +80,33 @@
 }
 
 html,
-body {
-  background-color: #050608;
+body,
+#root {
+  background-color: #000000;
   color: var(--text-primary);
   font-family: var(--font-sans);
-  min-height: 100vh;
-  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   letter-spacing: -0.011em;
+}
+
+/* Native Mobile / Android Container */
+.native-mobile-container {
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: #000000;
+  overflow: hidden;
+  position: fixed;
+  inset: 0;
 }
 
 /* Scrollbars */
@@ -313,7 +331,7 @@ body {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-bottom: 104px;
+  padding-bottom: calc(108px + env(safe-area-inset-bottom, 16px));
   -webkit-overflow-scrolling: touch;
 }
 
@@ -433,22 +451,30 @@ body {
 
 /* Mini Player Floating Dock */
 .mini-player-dock {
-  position: absolute;
-  bottom: 16px;
+  position: fixed;
+  bottom: calc(76px + env(safe-area-inset-bottom, 12px));
   left: 12px;
   right: 12px;
-  background: rgba(18, 20, 28, 0.92);
+  max-width: 456px;
+  margin: 0 auto;
+  background: rgba(18, 20, 28, 0.95);
   backdrop-filter: blur(24px);
   border: 1px solid var(--border-medium);
-  border-radius: 0;
+  border-radius: 12px;
   padding: 8px 12px;
   display: flex;
   align-items: center;
   gap: 12px;
   box-shadow: var(--shadow-lg), 0 0 20px rgba(0, 0, 0, 0.5);
-  z-index: 35;
+  z-index: 40;
   animation: slide-up 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
+}
+
+.desktop-preview-container .mini-player-dock {
+  position: absolute;
+  bottom: 76px;
+  max-width: none;
 }
 
 .mini-vinyl-wrapper {

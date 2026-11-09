@@ -1,0 +1,846 @@
+/* =========================================================
+   GROOVY ALBUM DETAIL — MODERN STREAMING ERGONOMICS
+   Reference Mockup Redesign:
+   1. Immersive Full-Bleed Cover Art Hero with Cinematic Scrim Fade
+   2. Community Score Card with 10-Point Score & Distribution Bars
+   3. "Listen now" Multi-Platform Bar & Genre/Vibe Pills
+   4. Track Ratings List with Concentric Vinyl Scores & Equalizer Wave
+   5. Community Reviews Stack with User Badges & Reaction Counts
+   6. Sticky Fixed Bottom Review Action CTA
+   ========================================================= */
+
+.album-detail-page {
+  position: relative;
+  min-height: 100vh;
+  background: #07090e;
+  color: #ffffff;
+  padding-bottom: calc(96px + env(safe-area-inset-bottom, 16px));
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* Toast */
+.album-toast {
+  position: fixed;
+  top: max(20px, env(safe-area-inset-top, 20px));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  padding: 8px 18px;
+  background: rgba(22, 26, 38, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--gds-radius-pill, 9999px);
+  color: #ffffff;
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-semibold, 600);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  animation: albumToastPop 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes albumToastPop {
+  from { opacity: 0; transform: translate(-50%, -10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* ── 1. Hero Artwork Section ── */
+.album-hero-section {
+  position: relative;
+  width: 100%;
+  min-height: 480px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: max(64px, calc(env(safe-area-inset-top, 0px) + 16px)) 16px 24px;
+}
+
+.album-hero-bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  z-index: 1;
+  filter: brightness(0.9) contrast(1.05);
+}
+
+.album-hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg,
+      rgba(7, 9, 14, 0.42) 0%,
+      rgba(7, 9, 14, 0.08) 22%,
+      rgba(7, 9, 14, 0.45) 54%,
+      rgba(7, 9, 14, 0.88) 78%,
+      rgba(7, 9, 14, 1) 100%
+    );
+}
+
+/* Top Nav Over Hero */
+.album-hero-top-nav {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.album-circle-nav-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(14, 18, 26, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.album-circle-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.05);
+}
+
+/* More Menu Dropdown */
+.album-more-menu-wrap {
+  position: relative;
+}
+
+.album-more-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 60;
+  min-width: 180px;
+  background: #151824;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--gds-radius-lg, 16px);
+  padding: 6px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.album-more-dropdown button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: var(--gds-radius-md, 12px);
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-semibold, 600);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.album-more-dropdown button:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Overlaid Title & Artist Block */
+.album-hero-title-block {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0 4px;
+}
+
+.album-hero-kicker {
+  font-family: var(--gds-font-sans);
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-bold, 700);
+  letter-spacing: var(--gds-tracking-label, 0.08em);
+  text-transform: uppercase;
+  color: var(--gds-accent-citron, #d4ff32);
+  margin-bottom: 6px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.album-hero-title {
+  font-family: var(--gds-font-display);
+  font-size: clamp(34px, 9vw, 42px);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0 0 8px;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
+}
+
+.album-hero-artist {
+  font-family: var(--gds-font-sans);
+  font-size: 13px;
+  font-weight: var(--gds-weight-bold, 700);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #cbd5e1;
+  margin: 0;
+  cursor: pointer;
+  transition: color 0.18s;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
+}
+
+.album-hero-artist:hover {
+  color: var(--gds-accent-citron, #d4ff32);
+}
+
+/* ── 2. Community Score Card ── */
+.album-score-card {
+  margin: 16px 16px 20px;
+  padding: 20px 22px;
+  background: var(--gds-bg-surface-1, #10131d);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--gds-radius-xl, 24px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.score-card-kicker {
+  display: block;
+  font-size: 11px;
+  font-weight: var(--gds-weight-black, 800);
+  letter-spacing: var(--gds-tracking-label, 0.08em);
+  text-transform: uppercase;
+  color: var(--gds-accent-citron, #d4ff32);
+  margin-bottom: 12px;
+}
+
+.score-card-content {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 24px;
+  align-items: center;
+}
+
+.score-main-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.score-digits-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+}
+
+.score-large-number {
+  font-family: var(--gds-font-display);
+  font-size: 44px;
+  font-weight: 900;
+  line-height: 1;
+  color: #ffffff;
+  letter-spacing: -0.03em;
+}
+
+.score-scale-denom {
+  font-size: 13px;
+  font-weight: var(--gds-weight-semibold, 600);
+  color: #64748b;
+}
+
+.score-ratings-count {
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-medium, 500);
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/* Distribution Bars (10 to 6) */
+.score-bars-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: center;
+}
+
+.score-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.score-bar-label {
+  font-size: 10px;
+  font-weight: var(--gds-weight-bold, 700);
+  color: #64748b;
+  width: 14px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.score-bar-track {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: var(--gds-radius-pill, 9999px);
+  overflow: hidden;
+}
+
+.score-bar-fill {
+  height: 100%;
+  border-radius: var(--gds-radius-pill, 9999px);
+  background: linear-gradient(90deg, #b8e61e 0%, var(--gds-accent-citron, #d4ff32) 100%);
+  transition: width 0.4s ease;
+}
+
+/* ── 3. Listen Now & Quick Platform Bar ── */
+.album-listen-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  margin: 0 16px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.album-listen-label {
+  font-size: 13px;
+  font-weight: var(--gds-weight-medium, 500);
+  color: #94a3b8;
+}
+
+.album-platform-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.platform-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: #cbd5e1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.18s;
+  text-decoration: none;
+}
+
+.platform-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.platform-btn.play-circle-btn {
+  background: rgba(212, 255, 50, 0.12);
+  border-color: rgba(212, 255, 50, 0.3);
+  color: var(--gds-accent-citron, #d4ff32);
+}
+
+.platform-btn.play-circle-btn.is-playing {
+  background: var(--gds-accent-citron, #d4ff32);
+  color: #0b0d13;
+}
+
+.platform-btn.is-fav {
+  border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+}
+
+/* ── 4. Genre Pills Row ── */
+.album-genres-row {
+  display: flex;
+  gap: 8px;
+  padding: 0 20px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.album-genre-chip {
+  padding: 6px 14px;
+  border-radius: var(--gds-radius-pill, 9999px);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-medium, 500);
+  color: #cbd5e1;
+}
+
+/* ── 5. Tracklist Ratings Section ── */
+.album-tracklist-section {
+  padding: 0 16px;
+  margin-bottom: 28px;
+}
+
+.tracklist-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+
+.tracklist-kicker {
+  display: block;
+  font-size: 11px;
+  font-weight: var(--gds-weight-bold, 700);
+  letter-spacing: var(--gds-tracking-label, 0.08em);
+  text-transform: uppercase;
+  color: var(--gds-accent-citron, #d4ff32);
+  margin-bottom: 3px;
+}
+
+.tracklist-title {
+  font-family: var(--gds-font-display);
+  font-size: var(--gds-text-h3, 20px);
+  font-weight: var(--gds-weight-bold, 700);
+  color: #ffffff;
+  margin: 0;
+}
+
+.tracklist-view-all-btn {
+  background: none;
+  border: none;
+  color: var(--gds-accent-citron, #d4ff32);
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-bold, 700);
+  cursor: pointer;
+  padding: 4px;
+  transition: opacity 0.15s;
+}
+
+.tracklist-view-all-btn:hover {
+  opacity: 0.8;
+}
+
+.album-tracks-card {
+  background: var(--gds-bg-surface-1, #10131d);
+  border-radius: var(--gds-radius-xl, 24px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+}
+
+.track-item-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  transition: background 0.18s;
+}
+
+.track-item-row:last-child {
+  border-bottom: none;
+}
+
+.track-item-row:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+
+.track-left-col {
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.track-index-num {
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-semibold, 600);
+  color: #64748b;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Animated Equalizer Wave Bars */
+.album-equalizer-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2.5px;
+  height: 14px;
+}
+
+.eq-bar {
+  width: 2.5px;
+  background: var(--gds-accent-citron, #d4ff32);
+  border-radius: 9999px;
+  animation: eqBounce 0.8s ease-in-out infinite alternate;
+}
+
+.eq-bar-1 { height: 6px; animation-delay: 0.1s; }
+.eq-bar-2 { height: 14px; animation-delay: 0.3s; }
+.eq-bar-3 { height: 9px; animation-delay: 0.2s; }
+
+@keyframes eqBounce {
+  0% { transform: scaleY(0.4); }
+  100% { transform: scaleY(1); }
+}
+
+.track-meta-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.track-item-title {
+  font-size: var(--gds-text-body, 14px);
+  font-weight: var(--gds-weight-bold, 700);
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.25;
+}
+
+
+.track-item-duration {
+  font-size: var(--gds-text-caption, 11px);
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.track-right-col {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.track-action-btn {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s;
+}
+
+.track-action-btn:hover {
+  color: #ffffff;
+}
+
+.track-action-btn.is-fav {
+  color: #ef4444;
+}
+
+.track-score-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.vinyl-score-icon {
+  flex-shrink: 0;
+}
+
+.track-score-val {
+  font-size: 13px;
+  font-weight: var(--gds-weight-black, 800);
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+}
+
+.tracklist-empty-state {
+  padding: 32px 16px;
+  text-align: center;
+  color: #64748b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── 6. Community Reviews Section ── */
+.album-reviews-section {
+  padding: 0 16px;
+  margin-bottom: 32px;
+}
+
+.reviews-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  padding: 0 4px;
+}
+
+.reviews-section-title {
+  font-family: var(--gds-font-display);
+  font-size: var(--gds-text-h3, 20px);
+  font-weight: var(--gds-weight-bold, 700);
+  color: #ffffff;
+  margin: 0;
+}
+
+.reviews-filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--gds-text-label, 12px);
+  font-weight: var(--gds-weight-bold, 700);
+  color: var(--gds-accent-citron, #d4ff32);
+  cursor: pointer;
+}
+
+/* ── Community Reviews Unified Card (In Harmony with rest of app) ── */
+.album-reviews-card {
+  background: var(--gds-bg-surface-1, #12141c);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--gds-radius-xl, 20px);
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.album-review-item {
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: background 0.15s ease;
+}
+
+.album-review-item:last-child {
+  border-bottom: none;
+}
+
+.album-review-item:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.album-review-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.album-review-user-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.album-review-avatar-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #1a1e2b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.album-review-user-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.album-review-name-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  line-height: 1.2;
+}
+
+.album-review-author-name {
+  font-size: 14px;
+  font-weight: 750;
+  color: #ffffff;
+}
+
+.album-review-author-handle {
+  font-size: 12.5px;
+  color: #64748b;
+}
+
+.album-review-dot-sep {
+  font-size: 12px;
+  color: #475569;
+}
+
+.album-review-time-str {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.album-review-curator-badge {
+  font-size: 9.5px;
+  font-weight: 850;
+  letter-spacing: 0.06em;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: rgba(212, 255, 50, 0.14);
+  color: var(--gds-accent-citron, #d4ff32);
+  width: fit-content;
+}
+
+.album-review-score-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.album-review-score-num {
+  font-size: 14px;
+  font-weight: 800;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+}
+
+.album-review-body-text {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #cbd5e1;
+  margin: 0;
+  word-break: break-word;
+}
+
+.album-review-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 2px;
+}
+
+.album-review-meta-chips {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.album-review-track-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(212, 255, 50, 0.08);
+  border: 1px solid rgba(212, 255, 50, 0.2);
+  color: var(--gds-accent-citron, #d4ff32);
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.album-review-tag-chip {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 550;
+}
+
+.album-review-reactions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.album-review-react-btn {
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 0;
+  transition: color 0.15s ease;
+}
+
+.album-review-react-btn:hover {
+  color: #cbd5e1;
+}
+
+.album-review-react-btn.is-liked {
+  color: #ef4444;
+}
+
+/* ── 6. Review Action Button (Positioned between Tracklist & Community Reviews) ── */
+.album-mid-cta-wrap {
+  padding: 0 16px;
+  margin: 18px auto 32px;
+  max-width: 520px;
+}
+
+.album-review-action-btn {
+  width: 100%;
+  height: 48px;
+  border-radius: var(--gds-radius-lg, 16px);
+  background: var(--gds-accent-citron, #d4ff32);
+  color: var(--gds-accent-citron-text, #0b0d13);
+  font-family: inherit;
+  font-size: var(--gds-text-body, 14px);
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), background 0.18s, box-shadow 0.18s;
+}
+
+.album-review-action-btn:hover {
+  background: var(--gds-accent-citron-hover, #e2ff60);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px var(--gds-accent-citron-glow, rgba(212, 255, 50, 0.4));
+}
+
+.album-review-action-btn:active {
+  transform: translateY(0);
+}
+
+
+.album-detail-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  gap: 16px;
+  color: #64748b;
+  text-align: center;
+}
